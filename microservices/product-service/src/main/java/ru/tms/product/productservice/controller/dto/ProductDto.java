@@ -1,4 +1,4 @@
-package ru.tms.product.productservice.controller.models;
+package ru.tms.product.productservice.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductApi {
+public class ProductDto {
     private String name;
     private String description;
     private BigDecimal price;
