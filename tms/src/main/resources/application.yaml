@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    username: postgres
+    hikari:
+      connectionTimeout: '20000'
+      maximumPoolSize: '5'
+    url: jdbc:postgresql://localhost:5432/tms
+    password: test
+  application:
+    name: tms
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
