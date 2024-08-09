@@ -1,10 +1,10 @@
+server:
+  port: 8081
 spring:
   application:
     name: order-service
   datasource:
+    url: jdbc:postgresql://localhost:5432/tms
+    driver-class-name: org.postgresql.Driver
     username: postgres
-    hikari:
-      connectionTimeout: '20000'
-      maximumPoolSize: '5'
-    url: jdbc:postgresql://localhost:5432/shop
-    password: test
+    password: "test"
