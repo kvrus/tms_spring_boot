@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: order-service
+  datasource:
+    username: postgres
+    hikari:
+      connectionTimeout: '20000'
+      maximumPoolSize: '5'
+    url: jdbc:postgresql://localhost:5432/shop
+    password: test
