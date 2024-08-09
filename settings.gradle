@@ -1,2 +1,3 @@
 include ':tms'
 include ':microservices:product-service'
+include ':microservices:order-service'
