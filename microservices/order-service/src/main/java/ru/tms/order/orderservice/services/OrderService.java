@@ -2,6 +2,7 @@ package ru.tms.order.orderservice.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tms.order.orderservice.controller.dto.OrderDto;
 import ru.tms.order.orderservice.controller.dto.OrderLineItemsDto;
 import ru.tms.order.orderservice.controller.dto.OrderResponseDto;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OrderService {
 
     final private OrderRepository repository;
