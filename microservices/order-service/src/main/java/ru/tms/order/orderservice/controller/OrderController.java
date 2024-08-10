@@ -25,7 +25,6 @@ public class OrderController {
 
     // curl -d '{"items":[{"skuCode":"iPhone_X","price": 1200.23,"quantity":1}, {"skuCode":"iPad","price": 1400.23,"quantity":1}]}' -H "Content-Type: application/json" -X POST http://localhost:8081/api/order
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public String createOrder(@RequestBody OrderDto order) {
