@@ -106,6 +106,20 @@ ALTER TABLE test_execution ADD CONSTRAINT fk_test_execution_case_id FOREIGN KEY 
 ALTER TABLE test_execution ADD CONSTRAINT fk_test_execution_status_id FOREIGN KEY (status_id) REFERENCES test_execution_status(id);
 ALTER TABLE test_execution ADD CONSTRAINT fk_test_execution_run_id FOREIGN KEY (run_id) REFERENCES test_run(id);
 
+INSERT INTO public.test_case_category (description, "name") VALUES('Базовая категория', 'default');
+INSERT INTO public.test_case_priority (description, "name") VALUES('Низкий приоритет', 'minor');
+INSERT INTO public.test_case_priority (description, "name") VALUES('Высокий приоритет', 'major');
+INSERT INTO public.test_case_status (description, "name") VALUES('Проверка пройдена', 'ready');
+INSERT INTO public.test_case_status (description, "name") VALUES('Требуется проверка', 'in review');
+
+INSERT INTO public.test_execution_status (description, "name") VALUES('Успешно пройден', 'passed');
+INSERT INTO public.test_execution_status (description, "name") VALUES('Не пройден', 'failed');
+INSERT INTO public.test_execution_status (description, "name") VALUES('Заблокирован', 'blocked');
+
+INSERT INTO public.test_plan_type (description, "name") VALUES('Базовый', 'base');
+INSERT INTO public.test_plan_type (description, "name") VALUES('Регрессионное тестирование', 'regress');
+INSERT INTO public.test_plan_type (description, "name") VALUES('Минимальное тестирование', 'smoke');
+
 
 
 --rollback truncate table testcase;
