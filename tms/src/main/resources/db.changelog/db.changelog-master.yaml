@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: classpath:db.changelog/0.0.1/add-tms-tables-1.sql
+  - include:
+      file: classpath:db.changelog/0.0.1/add-user-table-2.sql
