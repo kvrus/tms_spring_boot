@@ -1,6 +1,10 @@
 package ru.moscow.tms.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.moscow.tms.models.UserEntity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public interface JwtService {
 
@@ -9,4 +13,5 @@ public interface JwtService {
 
     boolean isTokenValid(String token, UserDetails userDetails);
 
+    String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails);
 }
