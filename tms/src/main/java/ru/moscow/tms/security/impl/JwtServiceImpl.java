@@ -27,16 +27,17 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        return extractExpiration(token).before(new Date(System.currentTimeMillis()));
     }
 
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
     public String generateToken(UserDetails userDetails) {
-        return Jwts.builder().setSubject(userDetails.getUsername())
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 100 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 24)))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -46,7 +47,7 @@ public class JwtServiceImpl implements JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 100 * 60 * 24 * 7))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * 7))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

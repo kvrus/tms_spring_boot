@@ -1,12 +1,11 @@
 package ru.moscow.tms.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.moscow.tms.controller.dto.RefreshTokenDto;
 import ru.moscow.tms.controller.dto.SignInDto;
 import ru.moscow.tms.controller.dto.SignInResponseDto;
 import ru.moscow.tms.controller.dto.SignUpDto;
@@ -48,5 +47,16 @@ public class AuthService {
         String jwt = jwtService.generateToken(user);
         String jwtRefresh = jwtService.generateRefreshToken(new HashMap<>(), user);
         return new SignInResponseDto(jwt,jwtRefresh);
+    }
+
+
+    public SignInResponseDto refreshToken(RefreshTokenDto token) {
+        String username = jwtService.extractUserName(token.getToken());
+        UserEntity user = userRepository.findByUsername(username).get();
+        if(jwtService.isTokenValid(token.getToken(), user)) {
+            String jwt = jwtService.generateToken(user);
+            return new SignInResponseDto(jwt, null);
+        }
+        return null;
     }
 }

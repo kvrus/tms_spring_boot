@@ -23,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import ru.moscow.tms.service.UserService;
 
 import static ru.moscow.tms.security.AuthUtil.SUPERUSER_ROLE;
+import static ru.moscow.tms.security.AuthUtil.USER_ROLE;
 
 @Configuration
 @EnableWebSecurity
@@ -38,14 +39,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority(SUPERUSER_ROLE)
+                        .requestMatchers("/api/test/**").hasAuthority(USER_ROLE)
                         .anyRequest().authenticated()
 
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider()).addFilterBefore(
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(
                         jwtFilter, UsernamePasswordAuthenticationFilter.class
                 );
-
         return http.build();
     }
 

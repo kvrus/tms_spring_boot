@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.moscow.tms.controller.dto.RefreshTokenDto;
 import ru.moscow.tms.controller.dto.SignInDto;
 import ru.moscow.tms.controller.dto.SignInResponseDto;
 import ru.moscow.tms.controller.dto.SignUpDto;
@@ -29,7 +30,12 @@ public class AuthController {
     @PostMapping("/signin")
     @ResponseStatus(HttpStatus.OK)
     public SignInResponseDto signInUser(@RequestBody SignInDto signIn) {
-        SignInResponseDto user = service.signIn(signIn);
-        return user;
+        return service.signIn(signIn);
+    }
+
+    @PostMapping("/refresh")
+    @ResponseStatus(HttpStatus.OK)
+    public SignInResponseDto refreshToken(@RequestBody RefreshTokenDto token) {
+        return service.refreshToken(token);
     }
 }
