@@ -19,9 +19,11 @@ public class AuthController {
     final private AuthService service;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUpUser(@RequestBody SignUpDto signup) {
+    @ResponseStatus(HttpStatus.OK)
+    public SignUpDto signUpUser(@RequestBody SignUpDto signup) {
         UserEntity user = service.signUp(signup);
-        return new ResponseEntity<>("User created you may login now", HttpStatus.OK);
+        signup.setPassword(null);
+        return signup;
     }
 
     @PostMapping("/signin")

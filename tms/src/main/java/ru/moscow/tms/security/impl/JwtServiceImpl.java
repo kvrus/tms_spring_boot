@@ -62,7 +62,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Key getSignKey() {
-        byte[] key = Decoders.BASE64.decode("some super secret value here");
+        byte[] key = Decoders.BASE64.decode("attWRcJQjDC5aJai6oasbnAtPywnkRVVattWRcJQjDC5aJai6oasbnAtPywnkRVV");
         return Keys.hmacShaKeyFor(key);
     }
 
