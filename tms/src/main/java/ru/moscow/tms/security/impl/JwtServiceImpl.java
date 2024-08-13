@@ -15,7 +15,24 @@ import java.util.function.Function;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-    private String generateToken(UserDetails userDetails) {
+
+    public String extractUserName(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String userName = extractUserName(token);
+        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+    public String generateToken(UserDetails userDetails) {
         return Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 100 * 60 * 24))

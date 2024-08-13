@@ -16,7 +16,7 @@ import ru.moscow.tms.repository.RoleRepository;
 import ru.moscow.tms.repository.UserRepository;
 import java.util.Collections;
 
-import static ru.moscow.tms.security.RolesUtil.USER_ROLE;
+import static ru.moscow.tms.security.AuthUtil.USER_ROLE;
 
 
 @RestController
