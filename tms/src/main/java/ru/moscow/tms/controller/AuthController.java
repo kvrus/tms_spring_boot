@@ -28,7 +28,7 @@ public class AuthController {
     final private RoleRepository roleRepository;
     final private PasswordEncoder encoder;
 
-    @PostMapping("signup")
+    @PostMapping("/signup")
     public ResponseEntity<String> signUpUser(@RequestBody SignUpDto signup) {
         if (userRepository.existsByUsername(signup.getUsername())) {
             return new ResponseEntity<>("User name is not allowed", HttpStatus.BAD_REQUEST);
