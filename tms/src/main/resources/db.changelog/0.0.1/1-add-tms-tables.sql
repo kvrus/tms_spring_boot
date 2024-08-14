@@ -117,6 +117,15 @@ ALTER TABLE test_execution ADD CONSTRAINT fk_test_execution_status_id FOREIGN KE
 ALTER TABLE test_execution ADD CONSTRAINT fk_test_execution_run_id FOREIGN KEY (run_id) REFERENCES test_run(id);
 
 ALTER TABLE test_execution ADD CONSTRAINT uq_case_run UNIQUE(case_id, run_id);
+ALTER TABLE test_plan ADD CONSTRAINT uq_test_plan_name UNIQUE(name);
+ALTER TABLE test_case ADD CONSTRAINT uq_test_case_name UNIQUE(name);
+ALTER TABLE test_run ADD CONSTRAINT uq_test_run_name UNIQUE(name);
+
+ALTER TABLE test_case_category ADD CONSTRAINT uq_test_case_category_name UNIQUE(name);
+ALTER TABLE test_case_priority ADD CONSTRAINT uq_test_case_priority_name UNIQUE(name);
+ALTER TABLE test_case_status ADD CONSTRAINT uq_test_case_status_name UNIQUE(name);
+ALTER TABLE test_execution_status ADD CONSTRAINT uq_test_execution_status_name UNIQUE(name);
+ALTER TABLE test_plan_type ADD CONSTRAINT uq_test_plan_type_name UNIQUE(name);
 
 INSERT INTO public.test_case_category (description, "name") VALUES('Базовая категория', 'default');
 INSERT INTO public.test_case_priority (description, "name") VALUES('Низкий приоритет', 'minor');
@@ -132,9 +141,7 @@ INSERT INTO public.test_plan_type (description, "name") VALUES('Базовый',
 INSERT INTO public.test_plan_type (description, "name") VALUES('Регрессионное тестирование', 'regress');
 INSERT INTO public.test_plan_type (description, "name") VALUES('Минимальное тестирование', 'smoke');
 
--- Add default test plan where all
--- INSERT INTO public.test_plan (description, "name") VALUES('Базовая категория', 'default');
-
-
+INSERT INTO public.test_plan (parent_id, author_id, plan_type_id, creation_date, is_active, description, "name")
+SELECT null, null, id, CURRENT_TIMESTAMP, true, 'Base test plan', 'base' from test_plan_type where name='base';
 
 --rollback truncate table testcase;

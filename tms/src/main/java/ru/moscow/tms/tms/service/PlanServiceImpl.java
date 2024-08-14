@@ -32,8 +32,8 @@ public class PlanServiceImpl {
         if (planRepository.existsByName(dto.getName())) {
             throw new IllegalStateException("Plan with this name already exists");
         }
-        UserEntity user = userRepository.findByUsername(authorName).orElseThrow(()-> new IllegalStateException("Author wan not found"));
-        TPlanType type = typeRepository.findByName(dto.getTypeName()).orElseThrow(()-> new IllegalStateException("Plan type wan not found"));
+        UserEntity user = userRepository.findByUsername(authorName).orElseThrow(()-> new IllegalStateException("Author was not found"));
+        TPlanType type = typeRepository.findByName(dto.getTypeName()).orElseThrow(()-> new IllegalStateException("Plan type was not found"));
         TPlan plan = new TPlan();
         plan.setPlanType(type);
         plan.set_active(true);
