@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class TestPlanDto {
     private String name;
     private String description;
+    private String typeName;
 }

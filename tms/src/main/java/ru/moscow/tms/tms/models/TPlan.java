@@ -30,7 +30,7 @@ public class TPlan {
     @JoinColumn(name = "plan_type_id", referencedColumnName = "id")
     private TPlanType planType;
 
-    @Column(name="timestamp", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name="creation_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date creation_date;
 
     private boolean is_active;
