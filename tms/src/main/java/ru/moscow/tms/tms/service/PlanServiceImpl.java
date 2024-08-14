@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.UserRepository;
+import ru.moscow.tms.tms.controller.dto.TestCaseResponseDto;
 import ru.moscow.tms.tms.controller.dto.TestPlanDto;
 import ru.moscow.tms.tms.models.TPlan;
 import ru.moscow.tms.tms.models.TPlanType;
@@ -12,6 +13,7 @@ import ru.moscow.tms.tms.repository.PlanRepository;
 import ru.moscow.tms.tms.repository.PlanTypeRepository;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +39,22 @@ public class PlanServiceImpl {
         plan.setDescription(dto.getDescription());
         plan.setAuthor(user);
         repository.save(plan);
+    }
+
+    public List<TestCaseResponseDto> getAllCasesInPlan(Long planId) {
+        TPlan plan = repository.getReferenceById(planId);
+        return plan.getCases().stream().map( (item) -> TestCaseResponseDto
+                .builder()
+                        .id(item.getId())
+                        .plan(plan.getName())
+                        .name(item.getName())
+                        .description(item.getDescription())
+                        .priority(item.getPriority().getName())
+                        .category(item.getCategory().getName())
+                        .status(item.getStatus().getName())
+                        .author(item.getAuthor().getUsername())
+                        .requirements(item.getRequirements())
+                        .build()
+                ).toList();
     }
 }

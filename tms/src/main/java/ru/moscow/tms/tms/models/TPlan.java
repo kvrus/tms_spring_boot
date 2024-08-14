@@ -8,6 +8,7 @@ import lombok.Setter;
 import ru.moscow.tms.auth.models.UserEntity;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "test_plan")
@@ -21,6 +22,14 @@ public class TPlan {
     private Long id;
 
     private Long parent_id;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "test_plan_case",
+            joinColumns = @JoinColumn(name = "plan_id"),
+            inverseJoinColumns = @JoinColumn(name = "case_id")
+    )
+    private List<TCase> cases = List.of();
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id", referencedColumnName = "id")
