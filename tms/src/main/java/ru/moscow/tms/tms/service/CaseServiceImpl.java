@@ -9,6 +9,7 @@ import ru.moscow.tms.tms.controller.dto.TestCaseDto;
 import ru.moscow.tms.tms.controller.dto.TestPlanDto;
 import ru.moscow.tms.tms.models.*;
 import ru.moscow.tms.tms.repository.*;
+import ru.moscow.tms.tms.repository.interfaces.CaseWithPlanRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CaseServiceImpl {
-    final private CaseRepository repository;
+    final private CaseWithPlanRepository repository;
     final private PlanRepository planRepository;
     final private UserRepository userRepository;
     final private CasePriorityRepository priorityRepository;
@@ -34,7 +35,7 @@ public class CaseServiceImpl {
         TCaseCategory category = categoryRepository.findByName(dto.getCategory()).orElseThrow(()-> new IllegalStateException("Category was not found"));
         TCaseStatus status = statusRepository.findByName("in review").orElseThrow(()-> new IllegalStateException("Status was not found"));
         TPlan plan = planRepository.findByName(dto.getPlan()).orElseThrow(()-> new IllegalStateException("Plan was not found"));
-        TCase testCase = new TCase();
+        TCaseWithPlan testCase = new TCaseWithPlan();
         testCase.set_automated(false);
         testCase.setAuthor(user);
         testCase.setName(dto.getName());
