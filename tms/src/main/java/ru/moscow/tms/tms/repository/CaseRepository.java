@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.moscow.tms.tms.models.TCase;
 import ru.moscow.tms.tms.models.TPlan;
+import ru.moscow.tms.tms.repository.interfaces.CaseWithPlanRepository;
 
 import java.util.List;
 

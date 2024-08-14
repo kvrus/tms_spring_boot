@@ -16,12 +16,20 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class TPlan {
+public class TPlanWithCase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long parent_id;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "test_plan_case",
+            joinColumns = @JoinColumn(name = "plan_id"),
+            inverseJoinColumns = @JoinColumn(name = "case_id")
+    )
+    private List<TCase> cases = List.of();
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id", referencedColumnName = "id")

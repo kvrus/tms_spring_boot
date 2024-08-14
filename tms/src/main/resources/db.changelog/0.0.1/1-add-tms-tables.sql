@@ -112,10 +112,11 @@ ALTER TABLE test_run ADD CONSTRAINT fk_test_run_plan_id FOREIGN KEY (plan_id) RE
 ALTER TABLE test_plan ADD CONSTRAINT fk_test_plan_type_id FOREIGN KEY (plan_type_id) REFERENCES test_plan_type(id);
 ALTER TABLE test_plan ADD CONSTRAINT fk_test_plan_parent_id FOREIGN KEY (parent_id) REFERENCES test_plan(id) DEFERRABLE INITIALLY DEFERRED;
 
-
 ALTER TABLE test_execution ADD CONSTRAINT fk_test_execution_case_id FOREIGN KEY (case_id) REFERENCES test_case(id);
 ALTER TABLE test_execution ADD CONSTRAINT fk_test_execution_status_id FOREIGN KEY (status_id) REFERENCES test_execution_status(id);
 ALTER TABLE test_execution ADD CONSTRAINT fk_test_execution_run_id FOREIGN KEY (run_id) REFERENCES test_run(id);
+
+ALTER TABLE test_execution ADD CONSTRAINT uq_case_run UNIQUE(case_id, run_id);
 
 INSERT INTO public.test_case_category (description, "name") VALUES('Базовая категория', 'default');
 INSERT INTO public.test_case_priority (description, "name") VALUES('Низкий приоритет', 'minor');

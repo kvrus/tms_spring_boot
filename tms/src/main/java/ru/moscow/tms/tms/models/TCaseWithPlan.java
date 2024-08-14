@@ -16,10 +16,18 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class TCase {
+public class TCaseWithPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "test_plan_case",
+            joinColumns = @JoinColumn(name = "case_id"),
+            inverseJoinColumns = @JoinColumn(name = "plan_id")
+    )
+    private List<TPlan> plans = List.of();
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id", referencedColumnName = "id")

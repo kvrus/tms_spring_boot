@@ -1,14 +1,51 @@
 package ru.moscow.tms.tms.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.moscow.tms.auth.models.UserEntity;
+
+import java.util.Date;
 
 @Entity
+@Table(name = "test_execution")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class TExecution {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "case_id", referencedColumnName = "id")
+    private TCase testCase;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "run_id", referencedColumnName = "id")
+    private TRun testRun;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", referencedColumnName = "id")
+    private TExecutionStatus status;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tester_id", referencedColumnName = "id")
+    private UserEntity tester;
+
+    @Column(name="creation_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Date creation_date;
+
+    @Column(name="start_date", columnDefinition="TIMESTAMP")
+    private Date start_date;
+
+    @Column(name="finish_date", columnDefinition="TIMESTAMP")
+    private Date finish_date;
+
+    private String description;
+
     private String name;
 }
