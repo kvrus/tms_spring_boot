@@ -3,8 +3,9 @@ package ru.moscow.tms.tms.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.UserRepository;
-import ru.moscow.tms.tms.controller.dto.TestExecutionDto;
+import ru.moscow.tms.tms.controller.dto.TestRunDto;
 import ru.moscow.tms.tms.models.*;
 import ru.moscow.tms.tms.repository.*;
 
@@ -19,16 +20,16 @@ public class TestRunServiceImpl {
 
     @Transactional
     public void createTestRun(
-            TestExecutionDto dto, String authorName
+            TestRunDto dto, String authorName
     ) {
-        // author field was missed in Database
-        //UserEntity user = userRepository.findByUsername(authorName).orElseThrow(()-> new IllegalStateException("Author was not found"));
+        UserEntity user = userRepository.findByUsername(authorName).orElseThrow(()-> new IllegalStateException("Author was not found"));
         TPlan testPlan = planRepository.findByName(dto.getPlan()).orElseThrow(()-> new IllegalStateException("Test plan was not found"));
         TRun testRun = new TRun();
         testRun.setName(dto.getName());
         testRun.setDescription(dto.getDescription());
         testRun.setCreation_date(new Date(System.currentTimeMillis()));
         testRun.setPlan(testPlan);
+        testRun.setAuthor(user);
         runRepository.save(testRun);
     }
 }
