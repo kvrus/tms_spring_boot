@@ -5,17 +5,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.moscow.tms.models.Role;
-import ru.moscow.tms.models.UserEntity;
-import ru.moscow.tms.repository.RoleRepository;
-import ru.moscow.tms.repository.UserRepository;
+import ru.moscow.tms.auth.models.Role;
+import ru.moscow.tms.auth.models.UserEntity;
+import ru.moscow.tms.auth.repository.RoleRepository;
+import ru.moscow.tms.auth.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static ru.moscow.tms.security.AuthUtil.SUPERUSER_ROLE;
-import static ru.moscow.tms.security.AuthUtil.USER_ROLE;
+import static ru.moscow.tms.auth.security.AuthUtil.SUPERUSER_ROLE;
 
 @SpringBootApplication
 public class TmsApplication {
