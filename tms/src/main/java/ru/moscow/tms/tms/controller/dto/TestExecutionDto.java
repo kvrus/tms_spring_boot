@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 public class TestExecutionDto {
     private String name;
     private String description;
-    private String plan;
+    private String status;
+    private String testCase;
+    private String testRun;
 }

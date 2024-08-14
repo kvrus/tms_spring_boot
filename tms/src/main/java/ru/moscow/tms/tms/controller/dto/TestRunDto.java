@@ -10,7 +10,5 @@ import lombok.NoArgsConstructor;
 public class TestRunDto {
     private String name;
     private String description;
-    private String status;
-    private String testCase;
-    private String testRun;
+    private String plan;
 }
