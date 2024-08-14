@@ -1,4 +1,4 @@
-package ru.moscow.tms.tms.repository.repository;
+package ru.moscow.tms.tms.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

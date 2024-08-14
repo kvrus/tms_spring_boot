@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.moscow.tms.auth.models.Role;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.RoleRepository;
@@ -16,6 +17,7 @@ import java.util.List;
 import static ru.moscow.tms.auth.security.AuthUtil.SUPERUSER_ROLE;
 
 @SpringBootApplication
+@EnableTransactionManagement
 public class TmsApplication {
 
 	public static void main(String[] args) {
