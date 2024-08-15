@@ -33,6 +33,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
+        if (request.getServletPath().contains("/v3/api-docs") || request.getServletPath().contains("/swagger-ui")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         final String authHeader = request.getHeader(AUTH_HEADER);
         if(StringUtils.isBlank(authHeader) || !authHeader.startsWith(TOKEN_BEARER_PREFIX)) {
             filterChain.doFilter(request, response);

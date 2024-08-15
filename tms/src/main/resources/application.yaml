@@ -9,3 +9,7 @@ spring:
   liquibase:
     change-log: classpath:db.changelog/db.changelog-master.yaml
     enabled: true
+ru_moscow_tms:
+  openapi:
+    dev-url: http://localhost:8088
+    prod-url: https://localhost:8080
