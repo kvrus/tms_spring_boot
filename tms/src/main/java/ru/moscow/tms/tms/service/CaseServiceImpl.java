@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.UserRepository;
 import ru.moscow.tms.tms.controller.dto.TestCaseDto;
+import ru.moscow.tms.tms.controller.dto.TestCaseUpdateDto;
 import ru.moscow.tms.tms.controller.dto.TestPlanDto;
 import ru.moscow.tms.tms.models.*;
 import ru.moscow.tms.tms.repository.*;
@@ -13,6 +14,7 @@ import ru.moscow.tms.tms.repository.interfaces.CaseWithPlanRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +48,23 @@ public class CaseServiceImpl {
         testCase.setDescription(dto.getDescription());
         testCase.setPlans(List.of(plan));
         repository.save(testCase);
+    }
+
+    public void updateTestCase(TestCaseUpdateDto caseDto, String username) {
+        TCaseWithPlan testCase = repository.findById(caseDto.getId()).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));
+        TCaseWithPlan testCaseWithThisName = repository.findByName(caseDto.getName()).orElse(testCase);
+        if(Objects.equals(testCase.getId(), testCaseWithThisName.getId())) {
+            TCasePriority priority = priorityRepository.findByName(caseDto.getPriority()).orElseThrow(()-> new IllegalStateException("Priority was not found"));
+            TCaseCategory category = categoryRepository.findByName(caseDto.getCategory()).orElseThrow(()-> new IllegalStateException("Category was not found"));
+            TCaseStatus status = statusRepository.findByName(caseDto.getStatus()).orElseThrow(()-> new IllegalStateException("Status was not found"));
+            testCase.setName(caseDto.getName());
+            testCase.setDescription(caseDto.getDescription());
+            testCase.setCategory(category);
+            testCase.setPriority(priority);
+            testCase.setStatus(status);
+            repository.save(testCase);
+        } else {
+            throw new IllegalStateException("Another case with this name already exists");
+        }
     }
 }

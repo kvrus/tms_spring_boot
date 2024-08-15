@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.moscow.tms.tms.controller.dto.TestCaseDto;
 import ru.moscow.tms.tms.controller.dto.TestCaseResponseDto;
+import ru.moscow.tms.tms.controller.dto.TestCaseUpdateDto;
 import ru.moscow.tms.tms.controller.dto.TestPlanDto;
 import ru.moscow.tms.tms.service.CaseServiceImpl;
 
@@ -32,6 +33,12 @@ public class TestCaseController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createTestPlan(@RequestBody TestCaseDto caseDto, @AuthenticationPrincipal UserDetails userDetails) {
         service.createTestCase(caseDto, userDetails.getUsername());
+    }
+
+    @PutMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public void updateTestPlan(@RequestBody TestCaseUpdateDto caseDto, @AuthenticationPrincipal UserDetails userDetails) {
+        service.updateTestCase(caseDto, userDetails.getUsername());
     }
 
     public String updateTestCase(@RequestBody TestCaseResponseDto planId) {
