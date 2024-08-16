@@ -5,17 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.moscow.tms.core.model.BaseDictionaryEntity;
+import ru.moscow.tms.core.model.BaseTmsEntity;
 
 @Entity
 @Table(name = "test_case_category")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-public class TCaseCategory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String description;
-    private String name;
-}
+public class TCaseCategory extends BaseDictionaryEntity {}

@@ -1,16 +1,12 @@
 package ru.moscow.tms.tms.controller;
 
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.moscow.tms.tms.controller.dto.TestCaseDto;
-import ru.moscow.tms.tms.controller.dto.TestCaseResponseDto;
 import ru.moscow.tms.tms.controller.dto.TestCaseUpdateDto;
-import ru.moscow.tms.tms.controller.dto.TestPlanDto;
 import ru.moscow.tms.tms.service.CaseServiceImpl;
 
 @RestController
@@ -20,32 +16,27 @@ public class TestCaseController {
 
     final private CaseServiceImpl service;
 
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<String> handleIllegalStateExceptions(IllegalStateException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    public String getTestCases(String planId) {
-        return "test cases";
-    }
-
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTestPlan(@RequestBody TestCaseDto caseDto, @AuthenticationPrincipal UserDetails userDetails) {
+    public void createTestCase(@RequestBody TestCaseDto caseDto, @AuthenticationPrincipal UserDetails userDetails) {
         service.createTestCase(caseDto, userDetails.getUsername());
     }
 
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public void updateTestPlan(@RequestBody TestCaseUpdateDto caseDto, @AuthenticationPrincipal UserDetails userDetails) {
+    public void updateTestCase(@RequestBody TestCaseUpdateDto caseDto, @AuthenticationPrincipal UserDetails userDetails) {
         service.updateTestCase(caseDto, userDetails.getUsername());
     }
 
-    public String updateTestCase(@RequestBody TestCaseResponseDto planId) {
-        return "test cases";
+    @DeleteMapping("/{caseId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void markAsDeletedTestCase(@PathVariable("caseId") String caseId) {
+        service.markAsDeleted(Long.parseLong(caseId));
     }
 
-    public String deleteTestCase(@PathParam("id") String caseId) {
-        return "test cases";
+    @GetMapping("/{caseId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void unmarkAsDeletedTestCase(@PathVariable("caseId") String caseId) {
+        service.unmarkAsDeleted(Long.parseLong(caseId));
     }
 }

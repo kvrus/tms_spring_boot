@@ -5,17 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.moscow.tms.core.model.BaseDictionaryEntity;
 
 @Entity
 @Table(name = "test_execution_status")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-public class TExecutionStatus {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String description;
-    private String name;
-}
+public class TExecutionStatus extends BaseDictionaryEntity {}
+

@@ -23,4 +23,9 @@ public class AppWideExceptionHandler {
     public ResponseEntity handleValidationException(ValidateException e) {
         return new ResponseEntity(new StandardResponse("400", "Error", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity handleIllegalStateExceptions(IllegalStateException e) {
+        return new ResponseEntity(new StandardResponse("500", "Error", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

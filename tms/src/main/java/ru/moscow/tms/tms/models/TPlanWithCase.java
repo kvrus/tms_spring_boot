@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.moscow.tms.auth.models.UserEntity;
+import ru.moscow.tms.core.model.BaseTmsEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -16,10 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class TPlanWithCase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class TPlanWithCase extends BaseTmsEntity {
 
     private Long parent_id;
 

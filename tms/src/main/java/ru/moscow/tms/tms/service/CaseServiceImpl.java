@@ -18,7 +18,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class CaseServiceImpl {
+public class CaseServiceImpl implements DeletableEntitiesMarker {
     final private CaseWithPlanRepository repository;
     final private PlanRepository planRepository;
     final private UserRepository userRepository;
@@ -66,5 +66,19 @@ public class CaseServiceImpl {
         } else {
             throw new IllegalStateException("Another case with this name already exists");
         }
+    }
+
+    @Override
+    public void markAsDeleted(Long id) {
+        TCaseWithPlan testCase = repository.findById(id).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));
+        testCase.set_deleted(true);
+        repository.save(testCase);
+    }
+
+    @Override
+    public void unmarkAsDeleted(Long id) {
+        TCaseWithPlan testCase = repository.findById(id).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));
+        testCase.set_deleted(false);
+        repository.save(testCase);
     }
 }
