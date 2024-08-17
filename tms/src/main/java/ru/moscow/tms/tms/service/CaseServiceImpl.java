@@ -1,13 +1,14 @@
 package ru.moscow.tms.tms.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.UserRepository;
-import ru.moscow.tms.tms.controller.dto.TestCaseDto;
-import ru.moscow.tms.tms.controller.dto.TestCaseUpdateDto;
-import ru.moscow.tms.tms.controller.dto.TestPlanDto;
+import ru.moscow.tms.tms.controller.dto.cases.TestCaseDto;
+import ru.moscow.tms.tms.controller.dto.cases.TestCaseUpdateDto;
 import ru.moscow.tms.tms.models.*;
 import ru.moscow.tms.tms.repository.*;
 import ru.moscow.tms.tms.repository.interfaces.CaseWithPlanRepository;
@@ -18,14 +19,16 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CaseServiceImpl implements DeletableEntitiesMarker {
+    final private CaseRepository caseRepository;
     final private CaseWithPlanRepository repository;
     final private PlanRepository planRepository;
     final private UserRepository userRepository;
     final private CasePriorityRepository priorityRepository;
     final private CaseStatusRepository statusRepository;
     final private CaseCategoryRepository categoryRepository;
-    @Transactional
+
     public void createTestCase(
             TestCaseDto dto, String authorName
     ) {
@@ -49,6 +52,7 @@ public class CaseServiceImpl implements DeletableEntitiesMarker {
         testCase.setPlans(List.of(plan));
         repository.save(testCase);
     }
+
 
     public void updateTestCase(TestCaseUpdateDto caseDto, String username) {
         TCaseWithPlan testCase = repository.findById(caseDto.getId()).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));
@@ -80,5 +84,9 @@ public class CaseServiceImpl implements DeletableEntitiesMarker {
         TCaseWithPlan testCase = repository.findById(id).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));
         testCase.set_deleted(false);
         repository.save(testCase);
+    }
+
+    public Page<TCase> getCases(int page, int size) {
+        return caseRepository.findAll(PageRequest.of(page, size));
     }
 }

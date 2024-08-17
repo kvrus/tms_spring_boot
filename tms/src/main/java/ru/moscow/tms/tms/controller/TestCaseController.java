@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import ru.moscow.tms.tms.controller.dto.TestCaseDto;
-import ru.moscow.tms.tms.controller.dto.TestCaseUpdateDto;
+import ru.moscow.tms.tms.controller.dto.cases.TestCaseDto;
+import ru.moscow.tms.tms.controller.dto.cases.TestCaseUpdateDto;
 import ru.moscow.tms.tms.service.CaseServiceImpl;
 
 @RestController

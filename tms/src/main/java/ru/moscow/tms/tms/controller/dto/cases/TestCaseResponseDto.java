@@ -1,4 +1,4 @@
-package ru.moscow.tms.tms.controller.dto;
+package ru.moscow.tms.tms.controller.dto.cases;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

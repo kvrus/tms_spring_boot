@@ -1,4 +1,4 @@
-package ru.moscow.tms.tms.controller.dto;
+package ru.moscow.tms.tms.controller.dto.run;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TestExecutionDto {
+public class TestRunUpdateDto {
+    private Long id;
     private String name;
     private String description;
-    private String status;
-    private String testCase;
-    private String testRun;
 }

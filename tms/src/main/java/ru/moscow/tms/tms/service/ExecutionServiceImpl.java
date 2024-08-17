@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.UserRepository;
-import ru.moscow.tms.tms.controller.dto.TestExecutionDto;
-import ru.moscow.tms.tms.controller.dto.TestExecutionUpdateDto;
+import ru.moscow.tms.tms.controller.dto.execution.TestExecutionDto;
+import ru.moscow.tms.tms.controller.dto.execution.TestExecutionUpdateDto;
 import ru.moscow.tms.tms.models.*;
 import ru.moscow.tms.tms.repository.*;
 

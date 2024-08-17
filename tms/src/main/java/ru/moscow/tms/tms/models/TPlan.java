@@ -9,7 +9,6 @@ import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.core.model.BaseTmsEntity;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "test_plan")
@@ -30,7 +29,7 @@ public class TPlan extends BaseTmsEntity {
     private TPlanType planType;
 
     @Column(name="creation_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Date creation_date;
+    private Date creationDate;
 
     private boolean is_active;
 

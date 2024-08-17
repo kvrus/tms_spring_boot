@@ -27,7 +27,7 @@ public class TRun extends BaseTmsEntity {
     private TPlan plan;
 
     @Column(name="creation_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Date creation_date;
+    private Date creationDate;
 
     @Column(name="start_date", columnDefinition="TIMESTAMP")
     private Date start_date;
