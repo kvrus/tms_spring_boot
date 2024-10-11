@@ -12,6 +12,7 @@ import ru.moscow.tms.tms.service.ExecutionServiceImpl;
 @RestController
 @RequestMapping("/api/test/execution")
 @RequiredArgsConstructor
+@CrossOrigin(origins="http://localhost:8080")
 public class TestExecutionController {
     final private ExecutionServiceImpl service;
 

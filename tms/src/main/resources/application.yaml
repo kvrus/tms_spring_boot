@@ -1,6 +1,8 @@
 server:
   port: 8082
 spring:
+  banner:
+    location: classpath:banner.txt
   datasource:
     url: jdbc:postgresql://localhost:5432/tms
     driver-class-name: org.postgresql.Driver

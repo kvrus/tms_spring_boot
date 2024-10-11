@@ -17,6 +17,7 @@ import ru.moscow.tms.tms.service.TestRunServiceImpl;
 @RestController
 @RequestMapping("/api/test/run")
 @RequiredArgsConstructor
+@CrossOrigin(origins="http://localhost:8080")
 public class TestRunController {
     final private TestRunServiceImpl service;
 
