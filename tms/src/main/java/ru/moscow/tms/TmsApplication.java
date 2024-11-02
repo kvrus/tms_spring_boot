@@ -13,6 +13,8 @@ import ru.moscow.tms.auth.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Optional;
 
 import static ru.moscow.tms.auth.security.AuthUtil.SUPERUSER_ROLE;
 
@@ -22,6 +24,15 @@ public class TmsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TmsApplication.class, args);
+	}
+
+	public static void test() {
+		List<Integer> list = Arrays.asList(1,4,5,6,22,24,120);
+		Optional<Integer> sum = list.stream().reduce(Integer::sum);
+		System.out.println(sum.get());
+
+		var res = list.stream().mapToInt(x->x).average();
+		System.out.println(res);
 	}
 
 	@Bean
