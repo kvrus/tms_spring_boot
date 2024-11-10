@@ -2,9 +2,11 @@ package ru.moscow.tms.tms.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import ru.moscow.tms.tms.models.TPlan;
 import ru.moscow.tms.tms.models.TPlanCalculation;
+import ru.moscow.tms.tms.models.TPlanProcedure;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,5 +35,11 @@ public interface PlanRepository extends JpaRepository<TPlan, Long> {
             tp.id
         """, nativeQuery = true)
     List<TPlanCalculation> getPlanCasesCount(int limit, int offset);
+
+
+    @Query(value = """
+        SELECT * FROM FIND_TEST_CASE_AFTER_YEAR(2024)
+        """, nativeQuery = true)
+    List<TPlanProcedure> findTestCaseAfterYear(Integer year);
 
 }

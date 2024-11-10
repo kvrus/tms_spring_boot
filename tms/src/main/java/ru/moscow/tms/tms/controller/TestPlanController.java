@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.tms.controller.dto.CustomPage;
 import ru.moscow.tms.tms.controller.dto.cases.TestCaseResponseDto;
-import ru.moscow.tms.tms.controller.dto.plan.TestPlanCalculationsResponseDto;
-import ru.moscow.tms.tms.controller.dto.plan.TestPlanDto;
-import ru.moscow.tms.tms.controller.dto.plan.TestPlanResponseDto;
-import ru.moscow.tms.tms.controller.dto.plan.TestPlanUpdateDto;
+import ru.moscow.tms.tms.controller.dto.plan.*;
 import ru.moscow.tms.tms.models.TPlan;
 import ru.moscow.tms.tms.models.TPlanCalculation;
+import ru.moscow.tms.tms.models.TPlanProcedure;
 import ru.moscow.tms.tms.service.PlanServiceImpl;
 
 import java.util.List;
@@ -45,7 +43,13 @@ public class TestPlanController {
     public CustomPage<TestPlanCalculationsResponseDto> getPlansCalculations(@RequestParam("page") int page, @RequestParam("size") int size) {
         List<TPlanCalculation> pageResult = service.getPlansCasesCount(page, size);
         return new CustomPage<>(page, size, false, pageResult.stream().map(item -> new TestPlanCalculationsResponseDto(item.getPlanId(), item.getName(), item.getCaseCount())).toList());
-        //return new CustomPage<>(page, size, false, pageResult.stream().map(item -> new TestPlanCalculationsResponseDto(1L, "nbm", 1L)).toList());
+    }
+
+    @GetMapping("/procedure")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TestPlanProcedureDto> getPlanProcedure(@RequestParam("year") int year) {
+        List<TPlanProcedure> pageResult = service.getPlanProcedure(year);
+        return pageResult.stream().map(item -> new TestPlanProcedureDto(item.getId(), item.getCreationDate())).toList();
     }
 
     private String getUserNameIfExists(UserEntity author) {
