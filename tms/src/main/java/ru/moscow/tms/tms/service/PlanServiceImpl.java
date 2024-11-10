@@ -95,4 +95,8 @@ public class PlanServiceImpl implements DeletableEntitiesMarker {
     public Page<TPlan> getPlans(int page, int size) {
         return planRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "creationDate")));
     }
+
+    public List<TPlanCalculation> getPlansCasesCount(int page, int size) {
+        return planRepository.getPlanCasesCount(size, page*size);
+    }
 }

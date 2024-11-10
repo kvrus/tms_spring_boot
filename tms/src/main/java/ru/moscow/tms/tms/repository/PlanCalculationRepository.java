@@ -9,21 +9,13 @@ import ru.moscow.tms.tms.models.TPlanCalculation;
 import java.util.List;
 import java.util.Optional;
 
-public interface PlanRepository extends JpaRepository<TPlan, Long> {
-
-    Optional<TPlan> findByName(String name);
-
-    // Custom query
-    @Query("SELECT b FROM TPlan b WHERE b.name like :query")
-    List<TPlan> findByNameSimilarity(@Param("query") String query);
-
-    boolean existsByName(String name);
+public interface PlanCalculationRepository extends JpaRepository<TPlan, Long> {
 
     @Query(value = """
         SELECT
             tp.id AS planId,
             tp.name AS name,
-            COUNT(test_plan_case.case_id) AS caseCount
+            COUNT(test_plan_case.case_id) AS casecount
         FROM (select test_plan.id, test_plan.name from test_plan limit ?1 offset ?2) as tp
         LEFT JOIN
             test_plan_case ON tp.id = test_plan_case.plan_id

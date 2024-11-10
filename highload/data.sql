@@ -3,8 +3,9 @@ select * from user_role;
 select * from test_plan;
 select * from test_plan_history;
 select * from test_case;
+select count(*) from test_plan_case;
 
--- Setup users
+-- Setup userss
 
 DO $$
 DECLARE
@@ -44,18 +45,47 @@ FOR user_record IN SELECT * FROM users LOOP
 END LOOP;
 END $$;
 
+-- Setup test plans
 
 DO $$
 DECLARE
 i INT;
 BEGIN
 FOR i IN 1..1000 LOOP
-		INSERT INTO public.users
-		(username, "password")
-		VALUES('User  ' || i, '$2a$10$gpcIA.1aQSzqOnPNO0.VwemYLq/P197XRxzHVg9EHTViEhyrtvbI2');
+		INSERT INTO public.test_plan
+			(parent_id, author_id, plan_type_id, creation_date, is_active, description, "name", is_deleted)
+			VALUES(null, 1, 1, NOW(), true, ' description  ' || i, 'title' || i, false);
 END LOOP;
 END $$;
 
+-- Setup test cases for plans
+
+DO $$
+DECLARE
+i INT;
+BEGIN
+FOR i IN 1..1000 LOOP
+		INSERT INTO public.test_case
+		(author_id, status_id, category_id, assignee_tester_id, priority_id, reviewer_tester_id, creation_date, is_automated, is_deleted, description, requirements, "name")
+		VALUES(1, 1, 1, 1, 1, 1, NOW(), false, false, 'description' || i, 'requirements' || i, 'name'||i);
+END LOOP;
+END $$;
+
+-- Link test cases for plans
+
+DO $$
+DECLARE
+test_plan_record RECORD;
+	test_case_record RECORD;
+BEGIN
+FOR test_plan_record IN SELECT * FROM public.test_plan LOOP
+    FOR test_case_record IN SELECT * FROM public.test_case LOOP
+                        INSERT INTO public.test_plan_case
+                        (plan_id, case_id)
+                        VALUES(test_plan_record.id, test_case_record.id);
+END LOOP;
+END LOOP;
+END $$;
 
 -- ADD HISTORY OF CHANGES FOR TEST PLANS
 
