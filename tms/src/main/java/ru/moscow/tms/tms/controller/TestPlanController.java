@@ -25,17 +25,17 @@ public class TestPlanController {
 
     final private PlanServiceImpl service;
 
-    @GetMapping("/{planId}/allCases")
-    @ResponseStatus(HttpStatus.OK)
-    public List<TestCaseResponseDto> getAllCasesInPlan(@PathVariable("planId") String planId) {
-        return service.getAllCasesInPlan(Long.parseLong(planId));
-    }
-
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public CustomPage<TestPlanResponseDto> getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         Page<TPlan> pageResult = service.getPlans(page, size);
-        return new CustomPage<>(pageResult.getNumber(), pageResult.getSize(), pageResult.hasNext(), pageResult.get().map(item -> new TestPlanResponseDto(item.getId(), item.getName(), item.getDescription(), item.getPlanType().getName(), getUserNameIfExists(item.getAuthor()), item.getCreationDate())).toList());
+        return new CustomPage<>(pageResult.getNumber(), pageResult.getSize(), pageResult.hasNext(), pageResult.get().map(item -> new TestPlanResponseDto(item.getId(), item.getName(), item.getDescription(), item.getPlanType().getName(), TestPlanResponseDto.getUserNameIfExists(item.getAuthor()), item.getCreationDate())).toList());
+    }
+
+    @GetMapping("/{planId}/allCases")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TestCaseResponseDto> getAllCasesInPlan(@PathVariable("planId") String planId) {
+        return service.getAllCasesInPlan(Long.parseLong(planId));
     }
 
     @GetMapping("/calculation")
@@ -50,14 +50,6 @@ public class TestPlanController {
     public List<TestPlanProcedureDto> getPlanProcedure(@RequestParam("year") int year) {
         List<TPlanProcedure> pageResult = service.getPlanProcedure(year);
         return pageResult.stream().map(item -> new TestPlanProcedureDto(item.getId(), item.getCreationDate())).toList();
-    }
-
-    private String getUserNameIfExists(UserEntity author) {
-        if(author == null) {
-            return "no author";
-        } else {
-            return author.getUsername();
-        }
     }
 
     @PostMapping()

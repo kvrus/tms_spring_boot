@@ -8,7 +8,6 @@ import ru.moscow.tms.tms.models.GreetingMessage;
 import ru.moscow.tms.tms.models.NotificationMessage;
 
 @Controller
-
 public class NotificationController {
 
     @MessageMapping("/hello")

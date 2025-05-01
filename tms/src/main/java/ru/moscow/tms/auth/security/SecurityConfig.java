@@ -43,6 +43,7 @@ public class SecurityConfig {
                                          "/v2/api-docs/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority(SUPERUSER_ROLE)
                         .requestMatchers("/api/test/**").hasAnyAuthority(SUPERUSER_ROLE, USER_ROLE)
+                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
