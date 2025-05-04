@@ -13,7 +13,6 @@ import ru.moscow.tms.auth.models.Role;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.RoleRepository;
 import ru.moscow.tms.auth.repository.UserRepository;
-import ru.moscow.tms.auth.security.JwtService;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,7 +26,6 @@ public class AuthService {
     final private UserRepository userRepository;
     final private RoleRepository roleRepository;
     final private PasswordEncoder encoder;
-    final private JwtService jwtService;
 
     public UserEntity signUp(SignUpDto dto) {
         if (userRepository.existsByUsername(dto.getUsername())) {
@@ -40,16 +38,16 @@ public class AuthService {
         user.setRoles(Collections.singletonList(roles));
         return userRepository.save(user);
     }
-
+/*
     public SignInResponseDto signIn(SignInDto signin) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getUsername(), signin.getPassword()));
         UserEntity user = userRepository.findByUsername(signin.getUsername()).get();
         String jwt = jwtService.generateToken(user);
         String jwtRefresh = jwtService.generateRefreshToken(new HashMap<>(), user);
         return new SignInResponseDto(jwt,jwtRefresh);
-    }
+    }*/
 
-
+/*
     public SignInResponseDto refreshToken(RefreshTokenDto token) {
         String username = jwtService.extractUserName(token.getToken());
         UserEntity user = userRepository.findByUsername(username).get();
@@ -58,5 +56,5 @@ public class AuthService {
             return new SignInResponseDto(jwt, null);
         }
         return null;
-    }
+    }*/
 }
