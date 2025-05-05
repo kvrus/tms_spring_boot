@@ -1,21 +1,20 @@
 package ru.moscow.tms.front.controller;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import ru.moscow.tms.auth.controller.dto.SignUpDto;
+import ru.moscow.tms.tms.controller.dto.cases.TestCaseDto;
+import ru.moscow.tms.tms.service.CaseServiceImpl;
 import ru.moscow.tms.tms.service.PlanServiceImpl;
 import org.springframework.ui.Model;
 import org.springframework.data.domain.Page;
 import ru.moscow.tms.tms.models.TPlan;
 import ru.moscow.tms.tms.controller.dto.cases.TestCaseResponseDto;
 import ru.moscow.tms.tms.controller.dto.plan.*;
-
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -24,6 +23,7 @@ import java.util.List;
 public class FrontTestPlansController {
 
     final private PlanServiceImpl service;
+    final private CaseServiceImpl caseService;
 
     @GetMapping("/plans")
     public String plansPage(
@@ -57,12 +57,20 @@ public class FrontTestPlansController {
         return "cases";
     }
 
-/*
-    @ModelAttribute("user")
-    public User wrapFormToModel(HttpSession session) {
-        User user = (User) session.getAttribute("loggedInUser");
-        return user;
+    @GetMapping("/plans/{planId}/allCases")
+    public String getAllCasesInPlan(@PathVariable("planId") String planId, Model model) {
+        List<TestCaseResponseDto> list = service.getAllCasesInPlan(Long.parseLong(planId));
+        model.addAttribute("testCases", list);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "cases";
     }
- */
 
+
+    @PostMapping("/cases")
+    public void handleFormSubmit(@ModelAttribute TestCaseDto caseDto, @AuthenticationPrincipal UserDetails userDetails){
+        caseService.createTestCase(caseDto, userDetails.getUsername());
+    }
 }

@@ -68,7 +68,9 @@
             </tr>
             </thead>
             <tbody id="table-body">
-            <tr th:each="testPlan: ${testPlans}">
+            <tr th:each="testPlan: ${testPlans}"
+                th:onclick="'window.location.href=\'/plans/' + ${testPlan.getId()} + '/allCases\';'"
+                style="cursor:pointer;">
                 <th scope="row" th:text="${testPlan.getId()}"/>
                 <td th:text="${testPlan.getName()}"/>
                 <td th:text="${testPlan.getDescription()}"/>
@@ -109,10 +111,6 @@
 </main>
 
 <div class="container mt-4">
-    <!-- Button to Open Modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createObjectModal">
-        Create New Object
-    </button>
     <!-- Modal -->
     <div class="modal fade" id="createObjectModal" tabindex="-1" aria-labelledby="createObjectModalLabel"
          aria-hidden="true">
@@ -202,7 +200,7 @@
             };
 
             // POST the data as JSON to the API
-            fetch(/*[[@{/api/test/plan}]]*/, {
+            fetch(/*[[@{/api/test/case}]]*/, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
