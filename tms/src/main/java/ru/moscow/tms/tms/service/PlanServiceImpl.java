@@ -82,19 +82,19 @@ public class PlanServiceImpl implements DeletableEntitiesMarker {
     @Override
     public void markAsDeleted(Long id) {
         TPlan entity = planRepository.findById(id).orElseThrow(() -> new IllegalStateException("Plan with this id does not exists"));
-        entity.set_deleted(true);
+        entity.setDeleted(true);
         planRepository.save(entity);
     }
 
     @Override
     public void unmarkAsDeleted(Long id) {
         TPlan entity = planRepository.findById(id).orElseThrow(() -> new IllegalStateException("Execution with this id does not exists"));
-        entity.set_deleted(true);
+        entity.setDeleted(true);
         planRepository.save(entity);
     }
 
     public Page<TPlan> getPlans(int page, int size) {
-        return planRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "creationDate")));
+        return planRepository.findByIsDeletedFalse(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "creationDate")));
     }
 
     public List<TPlanCalculation> getPlansCasesCount(int page, int size) {
@@ -111,7 +111,7 @@ public class PlanServiceImpl implements DeletableEntitiesMarker {
         plan.setId(p.getId());
         plan.setName(p.getName());
         plan.setDescription(p.getDescription());
-        plan.setTypeName(p.getPlanType().toString());
+        plan.setTypeName(p.getPlanType().getName());
         return plan;
     }
 }

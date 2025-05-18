@@ -67,6 +67,29 @@ public class FrontTestPlansController {
         return "redirect:/plans";
     }
 
+    @PostMapping("/plans/edit")
+    public String editPlan(@ModelAttribute TestPlanResponseDto plan,  @AuthenticationPrincipal UserDetails userDetails) {
+        service.update(new TestPlanUpdateDto(plan.getId(), plan.getName(), plan.getDescription(), plan.getTypeName()), userDetails.getUsername());
+        return "redirect:/plans";
+    }
+
+    @GetMapping("/plans/{planId}/edit")
+    public String editPlanPage(@PathVariable("planId") String planId, Model model) {
+        TestPlanResponseDto plan = service.getPlanById(Long.parseLong(planId));
+        model.addAttribute("plan", plan);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "add_plan";
+    }
+
+    @GetMapping("/plans/{planId}/delete")
+    public String deletePlanPage(@PathVariable("planId") String planId, Model model) {
+        service.markAsDeleted(Long.parseLong(planId));
+        return "redirect:/plans";
+    }
+
     @GetMapping("/plans/{planId}/cases")
     public String getAllCasesInPlan(@PathVariable("planId") String planId, Model model) {
         TestPlanResponseDto plan = service.getPlanById(Long.parseLong(planId));

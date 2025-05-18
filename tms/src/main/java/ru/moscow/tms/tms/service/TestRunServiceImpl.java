@@ -53,14 +53,14 @@ public class TestRunServiceImpl implements DeletableEntitiesMarker {
     @Override
     public void markAsDeleted(Long id) {
         TRun entity = runRepository.findById(id).orElseThrow(() -> new IllegalStateException("Run with this id does not exists"));
-        entity.set_deleted(true);
+        entity.setDeleted(true);
         runRepository.save(entity);
     }
 
     @Override
     public void unmarkAsDeleted(Long id) {
         TRun entity = runRepository.findById(id).orElseThrow(() -> new IllegalStateException("Run with this id does not exists"));
-        entity.set_deleted(true);
+        entity.setDeleted(true);
         runRepository.save(entity);
     }
 

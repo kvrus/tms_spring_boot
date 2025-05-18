@@ -75,14 +75,14 @@ public class CaseServiceImpl implements DeletableEntitiesMarker {
     @Override
     public void markAsDeleted(Long id) {
         TCaseWithPlan testCase = repository.findById(id).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));
-        testCase.set_deleted(true);
+        testCase.setDeleted(true);
         repository.save(testCase);
     }
 
     @Override
     public void unmarkAsDeleted(Long id) {
         TCaseWithPlan testCase = repository.findById(id).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));
-        testCase.set_deleted(false);
+        testCase.setDeleted(false);
         repository.save(testCase);
     }
 
