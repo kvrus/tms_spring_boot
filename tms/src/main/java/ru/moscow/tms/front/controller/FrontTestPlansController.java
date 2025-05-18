@@ -50,6 +50,23 @@ public class FrontTestPlansController {
         return "plans";
     }
 
+    @GetMapping("/plans/add")
+    public String addPlanPage(Model model) {
+        TestPlanDto plan = new TestPlanDto();
+        model.addAttribute("plan", plan);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "add_plan";
+    }
+
+    @PostMapping("/plans/add")
+    public String savePlan(@ModelAttribute TestPlanDto plan,  @AuthenticationPrincipal UserDetails userDetails) {
+        service.createTestPlan(plan, userDetails.getUsername());
+        return "redirect:/plans";
+    }
+
     @GetMapping("/cases")
     public String casesPage(Model model) {
         List<TestCaseResponseDto> cases = service.getAllCasesInPlan(2L);
@@ -57,7 +74,7 @@ public class FrontTestPlansController {
         return "cases";
     }
 
-    @GetMapping("/plans/{planId}/allCases")
+    @GetMapping("/plans/{planId}/cases")
     public String getAllCasesInPlan(@PathVariable("planId") String planId, Model model) {
         List<TestCaseResponseDto> list = service.getAllCasesInPlan(Long.parseLong(planId));
         model.addAttribute("testCases", list);
@@ -65,12 +82,14 @@ public class FrontTestPlansController {
         model.addAttribute("auth",
                 auth
         );
+        model.addAttribute("testcase", new TestCaseDto());
         return "cases";
     }
 
 
-    @PostMapping("/cases")
-    public void handleFormSubmit(@ModelAttribute TestCaseDto caseDto, @AuthenticationPrincipal UserDetails userDetails){
-        caseService.createTestCase(caseDto, userDetails.getUsername());
+    @PostMapping("/plans/{planId}/cases")
+    public void handleFormSubmit(@ModelAttribute("testcase") TestCaseDto testcase, @PathVariable("planId") String planId, @AuthenticationPrincipal UserDetails userDetails){
+        caseService.createTestCase(testcase, userDetails.getUsername());
     }
+
 }

@@ -34,12 +34,12 @@
         <form id="loginForm" novalidate th:action="@{/login}" method="post">
             <div class="mb-3">
                 <label for="username" class="form-label">Login</label>
-                <input type="text" class="form-control" id="username" name="username" required />
+                <input value="admin" type="text" class="form-control" id="username" name="username" required />
                 <div class="invalid-feedback">Please enter your login.</div>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required />
+                <input value="admin" type="password" class="form-control" id="password" name="password" required />
                 <div class="invalid-feedback">Please enter your password.</div>
             </div>
             <button type="submit" class="btn btn-primary w-100">Login</button>
