@@ -3,14 +3,16 @@ package ru.moscow.tms.front.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.moscow.tms.tms.controller.dto.cases.TestCaseResponseDto;
+import ru.moscow.tms.tms.controller.dto.plan.TestPlanDto;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanResponseDto;
+import ru.moscow.tms.tms.controller.dto.run.TestRunDto;
 import ru.moscow.tms.tms.controller.dto.run.TestRunResponseDto;
 import ru.moscow.tms.tms.models.TPlan;
 import ru.moscow.tms.tms.models.TRun;
@@ -63,5 +65,22 @@ public class FrontTestRunsController {
                 auth
         );
         return "runs";
+    }
+
+    @GetMapping("/runs/add")
+    public String addPlanPage(Model model) {
+        TestRunDto run = new TestRunDto();
+        model.addAttribute("run", run);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "add_run";
+    }
+
+    @PostMapping("/runs/add")
+    public String savePlan(@ModelAttribute TestRunDto run, @AuthenticationPrincipal UserDetails userDetails) {
+        service.createTestRun(run, userDetails.getUsername());
+        return "redirect:/runs";
     }
 }
