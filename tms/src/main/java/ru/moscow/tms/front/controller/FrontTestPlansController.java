@@ -67,15 +67,10 @@ public class FrontTestPlansController {
         return "redirect:/plans";
     }
 
-    @GetMapping("/cases")
-    public String casesPage(Model model) {
-        List<TestCaseResponseDto> cases = service.getAllCasesInPlan(2L);
-        model.addAttribute("testCases", cases);
-        return "cases";
-    }
-
     @GetMapping("/plans/{planId}/cases")
     public String getAllCasesInPlan(@PathVariable("planId") String planId, Model model) {
+        TestPlanResponseDto plan = service.getPlanById(Long.parseLong(planId));
+        model.addAttribute("plan", plan);
         List<TestCaseResponseDto> list = service.getAllCasesInPlan(Long.parseLong(planId));
         model.addAttribute("testCases", list);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -86,10 +81,24 @@ public class FrontTestPlansController {
         return "cases";
     }
 
+    @GetMapping("/plans/{planId}/cases/add")
+    public String addCaseToPlanPage(@PathVariable("planId") String planId, Model model) {
+        TestPlanResponseDto plan = service.getPlanById(Long.parseLong(planId));
+        model.addAttribute("plan", plan);
+        TestCaseDto testCase = new TestCaseDto();
+        model.addAttribute("testcase", testCase);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "add_case";
+    }
 
-    @PostMapping("/plans/{planId}/cases")
-    public void handleFormSubmit(@ModelAttribute("testcase") TestCaseDto testcase, @PathVariable("planId") String planId, @AuthenticationPrincipal UserDetails userDetails){
+
+    @PostMapping("/plans/{planId}/cases/add")
+    public String handleCaseFormSubmit(@ModelAttribute("testcase") TestCaseDto testcase, @PathVariable("planId") String planId, @AuthenticationPrincipal UserDetails userDetails){
         caseService.createTestCase(testcase, userDetails.getUsername());
+        return "redirect:/plans/"+planId+"/cases";
     }
 
 }

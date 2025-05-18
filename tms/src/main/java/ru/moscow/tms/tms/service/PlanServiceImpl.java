@@ -10,6 +10,7 @@ import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.UserRepository;
 import ru.moscow.tms.tms.controller.dto.cases.TestCaseResponseDto;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanDto;
+import ru.moscow.tms.tms.controller.dto.plan.TestPlanResponseDto;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanUpdateDto;
 import ru.moscow.tms.tms.models.*;
 import ru.moscow.tms.tms.repository.PlanRepository;
@@ -102,5 +103,15 @@ public class PlanServiceImpl implements DeletableEntitiesMarker {
 
     public List<TPlanProcedure> getPlanProcedure(int year) {
         return planRepository.findTestCaseAfterYear(year);
+    }
+
+    public TestPlanResponseDto getPlanById(long id) {
+        TPlan p = planRepository.findById(id).get();
+        TestPlanResponseDto plan = new TestPlanResponseDto();
+        plan.setId(p.getId());
+        plan.setName(p.getName());
+        plan.setDescription(p.getDescription());
+        plan.setTypeName(p.getPlanType().toString());
+        return plan;
     }
 }
