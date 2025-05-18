@@ -9,6 +9,8 @@
             crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap Icons CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
 </head>
 <body>
 <!-- Navbar -->
@@ -72,6 +74,7 @@
                 <th>Priority</th>
                 <th>Status</th>
                 <th>Tester</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -82,6 +85,18 @@
                 <td th:text="${testCase.getPriority()}">Priority</td>
                 <td th:text="${testCase.getStatus()}">Status</td>
                 <td th:text="${testCase.getTester()}">Tester</td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <a type="button" class="btn btn-sm btn-primary" title="Edit"
+                                th:href="@{/plans/{planId}/cases/{caseId}/edit(planId=${plan.getId()}, caseId=${testCase.getId()})}">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a type="button" class="btn btn-sm btn-danger" title="Delete"
+                                th:href="@{/plans/{planId}/cases/{caseId}/delete(planId=${plan.getId()}, caseId=${testCase.getId()})}">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>

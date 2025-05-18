@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.UserRepository;
+import ru.moscow.tms.tms.controller.dto.cases.TestCaseDto;
 import ru.moscow.tms.tms.controller.dto.cases.TestCaseResponseDto;
+import ru.moscow.tms.tms.controller.dto.cases.TestCaseUpdateDto;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanDto;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanResponseDto;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanUpdateDto;
 import ru.moscow.tms.tms.models.*;
+import ru.moscow.tms.tms.repository.CaseRepository;
 import ru.moscow.tms.tms.repository.PlanRepository;
 import ru.moscow.tms.tms.repository.PlanTypeRepository;
 import ru.moscow.tms.tms.repository.PlanWithCasesRepository;
@@ -28,6 +31,7 @@ public class PlanServiceImpl implements DeletableEntitiesMarker {
     final private PlanWithCasesRepository planWithCasesrepository;
     final private PlanRepository planRepository;
     final private UserRepository userRepository;
+    final private CaseRepository casesRepository;
 
     @Transactional
     public void createTestPlan(
@@ -50,7 +54,7 @@ public class PlanServiceImpl implements DeletableEntitiesMarker {
 
     public List<TestCaseResponseDto> getAllCasesInPlan(Long planId) {
         TPlanWithCase plan = planWithCasesrepository.getReferenceById(planId);
-        return plan.getCases().stream().map( (item) -> TestCaseResponseDto
+        return plan.getCases().stream().filter(c -> !c.isDeleted()).map( (item) -> TestCaseResponseDto
                 .builder()
                         .id(item.getId())
                         .plan(plan.getName())
@@ -113,5 +117,17 @@ public class PlanServiceImpl implements DeletableEntitiesMarker {
         plan.setDescription(p.getDescription());
         plan.setTypeName(p.getPlanType().getName());
         return plan;
+    }
+
+    public TestCaseUpdateDto getCaseById(long id) {
+        TCase c =  casesRepository.findById(id).get();
+        TestCaseUpdateDto testCase = new TestCaseUpdateDto();
+        testCase.setName(c.getName());
+        testCase.setDescription(c.getDescription());
+        testCase.setCategory(c.getCategory().getName());
+        testCase.setPriority(c.getPriority().getName());
+        testCase.setId(c.getId());
+        testCase.setStatus(c.getStatus().getName());
+        return testCase;
     }
 }

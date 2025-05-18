@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import ru.moscow.tms.tms.controller.dto.cases.TestCaseDto;
+import ru.moscow.tms.tms.controller.dto.cases.TestCaseUpdateDto;
 import ru.moscow.tms.tms.service.CaseServiceImpl;
 import ru.moscow.tms.tms.service.PlanServiceImpl;
 import org.springframework.ui.Model;
@@ -52,7 +53,7 @@ public class FrontTestPlansController {
 
     @GetMapping("/plans/add")
     public String addPlanPage(Model model) {
-        TestPlanDto plan = new TestPlanDto();
+        TestPlanUpdateDto plan = new TestPlanUpdateDto();
         model.addAttribute("plan", plan);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("auth",
@@ -108,7 +109,7 @@ public class FrontTestPlansController {
     public String addCaseToPlanPage(@PathVariable("planId") String planId, Model model) {
         TestPlanResponseDto plan = service.getPlanById(Long.parseLong(planId));
         model.addAttribute("plan", plan);
-        TestCaseDto testCase = new TestCaseDto();
+        TestCaseUpdateDto testCase = new TestCaseUpdateDto();
         model.addAttribute("testcase", testCase);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("auth",
@@ -117,10 +118,42 @@ public class FrontTestPlansController {
         return "add_case";
     }
 
+    @GetMapping("/plans/{planId}/cases/{caseId}/edit")
+    public String editCasePage(@PathVariable("planId") String planId, @PathVariable("caseId") String caseId, Model model) {
+        TestPlanResponseDto plan = service.getPlanById(Long.parseLong(planId));
+        model.addAttribute("plan", plan);
+        TestCaseUpdateDto testCase = service.getCaseById(Long.parseLong(caseId));
+        model.addAttribute("testcase", testCase);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "add_case";
+    }
+
+    @GetMapping("/plans/{planId}/cases/{caseId}/delete")
+    public String deleteCasePage(@PathVariable("planId") String planId, @PathVariable("caseId") String caseId, Model model) {
+        caseService.markAsDeleted(Long.parseLong(caseId));
+        return "redirect:/plans/"+planId+"/cases";
+    }
+
 
     @PostMapping("/plans/{planId}/cases/add")
-    public String handleCaseFormSubmit(@ModelAttribute("testcase") TestCaseDto testcase, @PathVariable("planId") String planId, @AuthenticationPrincipal UserDetails userDetails){
-        caseService.createTestCase(testcase, userDetails.getUsername());
+    public String handleCaseFormSubmit(@ModelAttribute("testcase") TestCaseUpdateDto testcase, @PathVariable("planId") String planId, @AuthenticationPrincipal UserDetails userDetails){
+        TestPlanResponseDto plan = service.getPlanById(Long.parseLong(planId));
+        caseService.createTestCase(new TestCaseDto(
+                testcase.getName(),
+                testcase.getDescription(),
+                plan.getName(),
+                testcase.getCategory(),
+                testcase.getPriority()
+        ), userDetails.getUsername());
+        return "redirect:/plans/"+planId+"/cases";
+    }
+
+    @PostMapping("/plans/{planId}/cases/{caseId}/edit")
+    public String handleEditCaseFormSubmit(@ModelAttribute("testcase") TestCaseUpdateDto testcase, @PathVariable("planId") String planId, @PathVariable("caseId") String caseId, @AuthenticationPrincipal UserDetails userDetails){
+        caseService.updateTestCase(testcase, userDetails.getUsername());
         return "redirect:/plans/"+planId+"/cases";
     }
 
