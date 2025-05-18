@@ -83,7 +83,7 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <!-- Previous Button -->
-            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                 <a class="page-link"
                    th:href="@{|/plans?page=${currentPage - 1}&size=${pageSize}|}"
                    th:aria-disabled="${currentPage == 1}"
@@ -91,10 +91,21 @@
                     &laquo; Previous
                 </a>
             </li>
-
+            <li th:if="${currentPage != 0}" class="page-item">
+                <a class="page-link"
+                   th:href="@{|/plans?page=${currentPage - 1}&size=${pageSize}|}"
+                   th:text="${currentPage}"
+                >1</a>
+            </li>
             <!-- Current Page -->
             <li class="page-item active" aria-current="page">
-                <span class="page-link" th:text="${currentPage}">1</span>
+                <span class="page-link" th:text="${currentPage+1}">1</span>
+            </li>
+            <li th:if="${hasNext}" class="page-item">
+                <a class="page-link"
+                   th:href="@{|/plans?page=${currentPage + 1}&size=${pageSize}|}"
+                   th:text="${currentPage+2}"
+                >2</a>
             </li>
 
             <!-- Next Button -->
