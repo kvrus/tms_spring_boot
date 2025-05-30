@@ -44,6 +44,7 @@ public class SecurityConfig {
                                          "/swagger-ui/**",
                                          "/swagger-resources/**",
                                          "/v2/api-docs/**").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority(SUPERUSER_ROLE)
                         .requestMatchers("/api/admin/**").hasAuthority(SUPERUSER_ROLE)
                         .requestMatchers("/api/test/**").hasAnyAuthority(SUPERUSER_ROLE, USER_ROLE)
                         .anyRequest().authenticated()
