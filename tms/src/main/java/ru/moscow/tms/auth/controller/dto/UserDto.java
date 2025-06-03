@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
-    private String username;
+    private String name;
     private Long id;
     private List<String> roles = new ArrayList<>();
 }

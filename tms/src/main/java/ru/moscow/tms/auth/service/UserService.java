@@ -30,7 +30,7 @@ public class UserService {
     }
 
     public Page<UserDto> getAll(int page, int size) {
-        return repository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "name"))).map(u -> new UserDto(u.getUsername(), u.getId(), u.getRoles().stream().map(Role::getName).toList()));
+        return repository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id"))).map(u -> new UserDto(u.getUsername(), u.getId(), u.getRoles().stream().map(Role::getName).toList()));
     }
 
 }
