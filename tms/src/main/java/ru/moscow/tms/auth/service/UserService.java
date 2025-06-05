@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ru.moscow.tms.auth.controller.dto.UserDto;
 import ru.moscow.tms.auth.models.Role;
 import ru.moscow.tms.auth.models.UserEntity;
+import ru.moscow.tms.auth.repository.RoleRepository;
 import ru.moscow.tms.auth.repository.UserRepository;
 import ru.moscow.tms.tms.models.TPlan;
 
@@ -20,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     final private UserRepository repository;
+    final private RoleRepository roleRepository;
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
             @Override
@@ -31,6 +33,10 @@ public class UserService {
 
     public Page<UserDto> getAll(int page, int size) {
         return repository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id"))).map(u -> new UserDto(u.getUsername(), u.getId(), u.getRoles().stream().map(Role::getName).toList()));
+    }
+
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
     }
 
 }

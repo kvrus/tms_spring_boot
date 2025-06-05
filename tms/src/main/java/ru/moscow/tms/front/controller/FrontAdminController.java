@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.moscow.tms.auth.controller.dto.RoleDto;
 import ru.moscow.tms.auth.controller.dto.SignUpDto;
 import ru.moscow.tms.auth.controller.dto.UserDto;
+import ru.moscow.tms.auth.models.Role;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.service.AuthService;
 import ru.moscow.tms.auth.service.UserService;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanResponseDto;
+import ru.moscow.tms.tms.controller.dto.plan.TestPlanUpdateDto;
 import ru.moscow.tms.tms.models.TCaseCategory;
 import ru.moscow.tms.tms.models.TCasePriority;
 import ru.moscow.tms.tms.models.TPlan;
@@ -79,6 +82,19 @@ public class FrontAdminController {
                 list
         );
         return "admin/test_priorities";
+    }
+
+    @GetMapping("/admin/users/add")
+    public String addUserPage(Model model) {
+        UserDto user = new UserDto();
+        List<RoleDto> roles = service.getAllRoles().stream().map(r-> new RoleDto(r.getName(), r.getId(), r.getName().equals("USER"))).toList();
+        model.addAttribute("roles", roles);
+        model.addAttribute("user", user);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "admin/add_user";
     }
 
 }
