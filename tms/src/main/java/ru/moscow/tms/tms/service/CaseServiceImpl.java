@@ -72,6 +72,18 @@ public class CaseServiceImpl implements DeletableEntitiesMarker {
         }
     }
 
+    public List<TCaseCategory> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    public List<TCasePriority> getAllPriorities() {
+        return priorityRepository.findAll();
+    }
+
+    public List<TCaseStatus> getAllStatuses() {
+        return statusRepository.findAll();
+    }
+
     @Override
     public void markAsDeleted(Long id) {
         TCaseWithPlan testCase = repository.findById(id).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));

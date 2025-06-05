@@ -16,13 +16,19 @@ import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.service.AuthService;
 import ru.moscow.tms.auth.service.UserService;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanResponseDto;
+import ru.moscow.tms.tms.models.TCaseCategory;
+import ru.moscow.tms.tms.models.TCasePriority;
 import ru.moscow.tms.tms.models.TPlan;
+import ru.moscow.tms.tms.service.CaseServiceImpl;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class FrontAdminController {
 
     final private UserService service;
+    final private CaseServiceImpl caseService;
 
     @GetMapping("/admin/users")
     public String getUsers(Model model,
@@ -51,12 +57,28 @@ public class FrontAdminController {
 
     @GetMapping("/admin/test/categories")
     public String getTestCategories(Model model) {
-        return "admin/categories";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        List<TCaseCategory> list = caseService.getAllCategories();
+        model.addAttribute("list",
+                list
+        );
+        return "admin/test_categories";
     }
 
     @GetMapping("/admin/test/priorities")
     public String getTestPriorities(Model model) {
-        return "admin/priorities";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        List<TCasePriority> list = caseService.getAllPriorities();
+        model.addAttribute("list",
+                list
+        );
+        return "admin/test_priorities";
     }
 
 }

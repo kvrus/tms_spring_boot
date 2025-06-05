@@ -50,27 +50,27 @@
 
 <!-- Page Content -->
 <main class="container my-4">
-
+    
     <div class="container my-4">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" href="/admin/users" aria-current="page">Users</a>
+                <a class="nav-link" href="/admin/users">Users</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/admin/test/categories">Test Categories</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/admin/test/priorities">Test Priorities</a>
+                <a class="nav-link active" href="/admin/test/priorities" aria-current="page">Test Priorities</a>
             </li>
         </ul>
     </div>
 
     <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
         <p class="lead mb-0">
-            Пользователи системы
+            Приоритеты тест кейсов
         </p>
         <a type="button" class="btn btn-primary" th:href="@{/admin/user/add}">
-            Create New User
+            Create New Priority
         </a>
     </div>
     <div class="table-responsive">
@@ -79,25 +79,21 @@
             <tr>
                 <th scope="col" style="width: 5%;">#</th>
                 <th scope="col" style="width: 25%;">Name</th>
-                <th scope="col" style="width: 50%;">Roles</th>
-                <th scope="col" style="width: 20%;">Status</th>
-                <th scope="col" style="width: 20%;">Actions</th>
+                <th scope="col" style="width: 5%;">Actions</th>
             </tr>
             </thead>
             <tbody id="table-body">
-            <tr th:each="user: ${users}" style="cursor:pointer;">
-                <th scope="row" th:text="${user.getId()}"/>
-                <td th:text="${user.getName()}"/>
-                <td th:text="${user.getRoles().toString()}"/>
-                <td th:text="Active"/>
+            <tr th:each="list: ${list}" style="cursor:pointer;">
+                <th scope="row" th:text="${list.getId()}"></th>
+                <td th:text="${list.getName()}"></td>
                 <td>
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-sm btn-primary" title="Edit"
-                                th:onclick="'window.location.href=\'/admin/users/' + ${user.getId()} + '/edit\';'">
+                                th:onclick="'window.location.href=\'/admin/users/' + ${list.getId()} + '/edit\';'">
                             <i class="bi bi-pencil"></i>
                         </button>
                         <button type="button" class="btn btn-sm btn-danger" title="Delete"
-                                th:onclick="'window.location.href=\'/admin/users/' + ${user.getId()} + '/delete\';'">
+                                th:onclick="'window.location.href=\'/admin/users/' + ${list.getId()} + '/delete\';'">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>
@@ -106,46 +102,6 @@
             </tbody>
         </table>
     </div>
-    <!-- Pagination -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <!-- Previous Button -->
-            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                <a class="page-link"
-                   th:href="@{|/admin/users?page=${currentPage - 1}&size=${pageSize}|}"
-                   th:aria-disabled="${currentPage == 1}"
-                   th:tabindex="${currentPage == 1} ? -1 : 0">
-                    &laquo; Previous
-                </a>
-            </li>
-            <li th:if="${currentPage != 0}" class="page-item">
-                <a class="page-link"
-                   th:href="@{|/admin/users?page=${currentPage - 1}&size=${pageSize}|}"
-                   th:text="${currentPage}"
-                >1</a>
-            </li>
-            <!-- Current Page -->
-            <li class="page-item active" aria-current="page">
-                <span class="page-link" th:text="${currentPage+1}">1</span>
-            </li>
-            <li th:if="${hasNext}" class="page-item">
-                <a class="page-link"
-                   th:href="@{|/admin/users?page=${currentPage + 1}&size=${pageSize}|}"
-                   th:text="${currentPage+2}"
-                >2</a>
-            </li>
-
-            <!-- Next Button -->
-            <li class="page-item" th:classappend="${!hasNext} ? 'disabled'">
-                <a class="page-link"
-                   th:href="@{|/admin/users?page=${currentPage + 1}&size=${pageSize}|}"
-                   th:aria-disabled="${!hasNext}"
-                   th:tabindex="${!hasNext} ? -1 : 0">
-                    Next &raquo;
-                </a>
-            </li>
-        </ul>
-    </nav>
 </main>
 
 </body>
