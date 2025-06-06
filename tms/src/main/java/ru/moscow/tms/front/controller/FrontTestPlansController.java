@@ -48,7 +48,9 @@ public class FrontTestPlansController {
         model.addAttribute("auth",
                 auth
         );
-        return "plans";
+        model.addAttribute("activePage", "plans");
+        model.addAttribute("contentTemplate", "content_plans");
+        return "layout";
     }
 
     @GetMapping("/plans/add")

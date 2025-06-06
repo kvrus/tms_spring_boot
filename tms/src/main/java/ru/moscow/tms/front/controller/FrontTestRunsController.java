@@ -64,7 +64,9 @@ public class FrontTestRunsController {
         model.addAttribute("auth",
                 auth
         );
-        return "runs";
+        model.addAttribute("activePage", "runs");
+        model.addAttribute("contentTemplate", "content_runs");
+        return "layout";
     }
 
     @GetMapping("/runs/add")

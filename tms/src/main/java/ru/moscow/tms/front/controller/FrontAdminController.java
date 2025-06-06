@@ -56,7 +56,9 @@ public class FrontAdminController {
         model.addAttribute("hasNext",
                 pageResult.hasNext()
         );
-        return "admin/users";
+        model.addAttribute("activePage", "users");
+        model.addAttribute("contentTemplate", "admin/content_users");
+        return "layout";
     }
 
     @GetMapping("/admin/test/categories")
@@ -69,7 +71,9 @@ public class FrontAdminController {
         model.addAttribute("list",
                 list
         );
-        return "admin/test_categories";
+        model.addAttribute("activePage", "categories");
+        model.addAttribute("contentTemplate", "admin/content_categories");
+        return "layout";
     }
 
     @GetMapping("/admin/test/priorities")
@@ -82,7 +86,9 @@ public class FrontAdminController {
         model.addAttribute("list",
                 list
         );
-        return "admin/test_priorities";
+        model.addAttribute("activePage", "priorities");
+        model.addAttribute("contentTemplate", "admin/content_priorities");
+        return "layout";
     }
 
     @GetMapping("/admin/users/add")
