@@ -48,7 +48,7 @@
 <!-- Page Content -->
 <main class="container col-6 my-4">
 
-    <form id="createObjectForm" th:action="${category.id} == null ? @{/plans/add} : @{/plans/edit}" method="post" th:object="${category}">
+    <form id="createObjectForm" th:action="${category.id} == null ? @{/test/categories/add} : @{/test/categories/edit}" method="post" th:object="${category}">
         <div class="modal-header">
             <h5 class="modal-title" id="createObjectModalLabel"
                 th:text="${category.id} == null ? 'Добавить категорию для тест кейса' : 'Редактировать категорию для тест кейса'">

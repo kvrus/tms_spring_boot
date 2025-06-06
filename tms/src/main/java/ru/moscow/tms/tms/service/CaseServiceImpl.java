@@ -109,4 +109,20 @@ public class CaseServiceImpl implements DeletableEntitiesMarker {
     public Page<TCase> getCases(int page, int size) {
         return caseRepository.findAll(PageRequest.of(page, size));
     }
+
+    public void saveNewCategory(TCaseCategory category) {
+        categoryRepository.save(category);
+    }
+
+    public void updateCategory(TCaseCategory category) {
+        categoryRepository.saveAndFlush(category);
+    }
+
+    public void saveNewPriority(TCasePriority priority) {
+        priorityRepository.save(priority);
+    }
+
+    public void updatePriority(TCasePriority priority) {
+        priorityRepository.saveAndFlush(priority);
+    }
 }

@@ -16,6 +16,7 @@ import ru.moscow.tms.auth.repository.UserRepository;
 import ru.moscow.tms.tms.models.TPlan;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,4 +40,10 @@ public class UserService {
         return roleRepository.findAll();
     }
 
+    public void updateUser(UserDto user) {
+        UserEntity entity = repository.findById(user.getId()).orElseThrow();
+        entity.setUsername(user.getName());
+        entity.setRoles(user.getRoles().stream().map(r -> roleRepository.findByName(r).orElseThrow()).toList());
+        repository.save(entity);
+    }
 }

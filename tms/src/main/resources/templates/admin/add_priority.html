@@ -48,7 +48,7 @@
 <!-- Page Content -->
 <main class="container col-6 my-4">
 
-    <form id="createObjectForm" th:action="${priority.id} == null ? @{/plans/add} : @{/plans/edit}" method="post"
+    <form id="createObjectForm" th:action="${priority.id} == null ? @{/admin/test/priorities/add} : @{/admin/test/priorities/edit}" method="post"
           th:object="${priority}">
         <div class="modal-header">
             <h5 class="modal-title" id="createObjectModalLabel"

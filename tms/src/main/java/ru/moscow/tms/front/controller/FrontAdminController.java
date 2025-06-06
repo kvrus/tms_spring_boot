@@ -3,7 +3,9 @@ package ru.moscow.tms.front.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import ru.moscow.tms.auth.models.Role;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.service.AuthService;
 import ru.moscow.tms.auth.service.UserService;
+import ru.moscow.tms.tms.controller.dto.plan.TestPlanDto;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanResponseDto;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanUpdateDto;
 import ru.moscow.tms.tms.models.TCaseCategory;
@@ -31,6 +34,7 @@ import java.util.List;
 public class FrontAdminController {
 
     final private UserService service;
+    final private AuthService authService;
     final private CaseServiceImpl caseService;
 
     @GetMapping("/admin/users")
@@ -119,4 +123,39 @@ public class FrontAdminController {
         return "admin/add_category";
     }
 
+    @PostMapping("/admin/users/add")
+    public String saveUser(@ModelAttribute UserDto user, @AuthenticationPrincipal UserDetails userDetails) {
+        authService.signUp(new SignUpDto(user.getName(), "123456"));
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/admin/users/edit")
+    public String editPlan(@ModelAttribute UserDto user,  @AuthenticationPrincipal UserDetails userDetails) {
+        service.updateUser(user);
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/admin/test/categories/add")
+    public String saveCategory(@ModelAttribute TCaseCategory category, @AuthenticationPrincipal UserDetails userDetails) {
+        caseService.saveNewCategory(category);
+        return "redirect:/admin/test/categories";
+    }
+
+    @PostMapping("/admin/test/categories/edit")
+    public String editCategory(@ModelAttribute TCaseCategory category,  @AuthenticationPrincipal UserDetails userDetails) {
+        caseService.updateCategory(category);
+        return "redirect:/admin/test/categories";
+    }
+
+    @PostMapping("/admin/test/priorities/add")
+    public String savePriority(@ModelAttribute TCasePriority priority, @AuthenticationPrincipal UserDetails userDetails) {
+        caseService.saveNewPriority(priority);
+        return "redirect:/admin/test/priorities";
+    }
+
+    @PostMapping("/admin/test/priorities/edit")
+    public String editPriority(@ModelAttribute TCasePriority priority,  @AuthenticationPrincipal UserDetails userDetails) {
+        caseService.updatePriority(priority);
+        return "redirect:/admin/test/priorities";
+    }
 }

@@ -48,7 +48,7 @@
 <!-- Page Content -->
 <main class="container col-6 my-4">
 
-    <form id="createObjectForm" th:action="${user.id} == null ? @{/plans/add} : @{/plans/edit}" method="post" th:object="${user}">
+    <form id="createObjectForm" th:action="${user.id} == null ? @{/admin/users/add} : @{/admin/users/edit}" method="post" th:object="${user}">
         <div class="modal-header">
             <h5 class="modal-title" id="createObjectModalLabel" th:text="${user.id} == null ? 'Добавить нового пользователя' : 'Редактировать пользователя'">Добавить тест план</h5>
         </div>
