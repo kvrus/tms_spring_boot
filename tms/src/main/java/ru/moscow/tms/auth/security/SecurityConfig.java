@@ -6,15 +6,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.moscow.tms.auth.service.UserService;
 
 import static ru.moscow.tms.auth.security.AuthUtil.SUPERUSER_ROLE;
@@ -24,7 +24,7 @@ import static ru.moscow.tms.auth.security.AuthUtil.USER_ROLE;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private  final JwtAuthFilter jwtFilter;
+
     private final UserService service;
 
     @Bean
@@ -37,19 +37,32 @@ public class SecurityConfig {
                                          "/api/auth/**",
                                          "/swagger-ui/**",
                                          "/v2/api-docs/**",
+                                         "/css/**",
+                                         "/js/**",
+                                         "/images/**",
                                          "/v3/api-docs/**",
                                          "/swagger-ui/**",
                                          "/swagger-resources/**",
                                          "/v2/api-docs/**").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority(SUPERUSER_ROLE)
                         .requestMatchers("/api/admin/**").hasAuthority(SUPERUSER_ROLE)
                         .requestMatchers("/api/test/**").hasAnyAuthority(SUPERUSER_ROLE, USER_ROLE)
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(
-                        jwtFilter, UsernamePasswordAuthenticationFilter.class
-                );
+                .formLogin(form -> form
+                        .loginPage("/login")          // Custom login page URL
+                        .loginProcessingUrl("/login") // URL to submit username and password POST
+                        .defaultSuccessUrl("/plans", true) // Redirect after login success
+                        .failureUrl("/login?error")   // Redirect after login failure
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                )
+                .userDetailsService(service.userDetailsService())
+                .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 

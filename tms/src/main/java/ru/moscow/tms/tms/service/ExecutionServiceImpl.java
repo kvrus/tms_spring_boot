@@ -58,14 +58,14 @@ public class ExecutionServiceImpl implements DeletableEntitiesMarker {
     @Override
     public void markAsDeleted(Long id) {
         TExecution entity = executionRepository.findById(id).orElseThrow(() -> new IllegalStateException("Execution with this id does not exists"));
-        entity.set_deleted(true);
+        entity.setDeleted(true);
         executionRepository.save(entity);
     }
 
     @Override
     public void unmarkAsDeleted(Long id) {
         TExecution entity = executionRepository.findById(id).orElseThrow(() -> new IllegalStateException("Execution with this id does not exists"));
-        entity.set_deleted(false);
+        entity.setDeleted(false);
         executionRepository.save(entity);
     }
 

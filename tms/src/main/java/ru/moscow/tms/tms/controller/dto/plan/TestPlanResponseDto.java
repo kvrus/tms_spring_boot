@@ -3,6 +3,7 @@ package ru.moscow.tms.tms.controller.dto.plan;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.moscow.tms.auth.models.UserEntity;
 
 import java.util.Date;
 
@@ -16,4 +17,12 @@ public class TestPlanResponseDto {
     private String typeName;
     private String authorName;
     private Date creation_date;
+
+    static public String getUserNameIfExists(UserEntity author) {
+        if(author == null) {
+            return "no author";
+        } else {
+            return author.getUsername();
+        }
+    }
 }

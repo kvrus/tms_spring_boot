@@ -8,10 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.UserRepository;
+import ru.moscow.tms.tms.controller.dto.cases.TestCaseDto;
 import ru.moscow.tms.tms.controller.dto.cases.TestCaseResponseDto;
+import ru.moscow.tms.tms.controller.dto.cases.TestCaseUpdateDto;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanDto;
+import ru.moscow.tms.tms.controller.dto.plan.TestPlanResponseDto;
 import ru.moscow.tms.tms.controller.dto.plan.TestPlanUpdateDto;
 import ru.moscow.tms.tms.models.*;
+import ru.moscow.tms.tms.repository.CaseRepository;
 import ru.moscow.tms.tms.repository.PlanRepository;
 import ru.moscow.tms.tms.repository.PlanTypeRepository;
 import ru.moscow.tms.tms.repository.PlanWithCasesRepository;
@@ -27,6 +31,7 @@ public class PlanServiceImpl implements DeletableEntitiesMarker {
     final private PlanWithCasesRepository planWithCasesrepository;
     final private PlanRepository planRepository;
     final private UserRepository userRepository;
+    final private CaseRepository casesRepository;
 
     @Transactional
     public void createTestPlan(
@@ -49,7 +54,7 @@ public class PlanServiceImpl implements DeletableEntitiesMarker {
 
     public List<TestCaseResponseDto> getAllCasesInPlan(Long planId) {
         TPlanWithCase plan = planWithCasesrepository.getReferenceById(planId);
-        return plan.getCases().stream().map( (item) -> TestCaseResponseDto
+        return plan.getCases().stream().filter(c -> !c.isDeleted()).map( (item) -> TestCaseResponseDto
                 .builder()
                         .id(item.getId())
                         .plan(plan.getName())
@@ -81,19 +86,19 @@ public class PlanServiceImpl implements DeletableEntitiesMarker {
     @Override
     public void markAsDeleted(Long id) {
         TPlan entity = planRepository.findById(id).orElseThrow(() -> new IllegalStateException("Plan with this id does not exists"));
-        entity.set_deleted(true);
+        entity.setDeleted(true);
         planRepository.save(entity);
     }
 
     @Override
     public void unmarkAsDeleted(Long id) {
         TPlan entity = planRepository.findById(id).orElseThrow(() -> new IllegalStateException("Execution with this id does not exists"));
-        entity.set_deleted(true);
+        entity.setDeleted(true);
         planRepository.save(entity);
     }
 
     public Page<TPlan> getPlans(int page, int size) {
-        return planRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "creationDate")));
+        return planRepository.findByIsDeletedFalse(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "creationDate")));
     }
 
     public List<TPlanCalculation> getPlansCasesCount(int page, int size) {
@@ -102,5 +107,27 @@ public class PlanServiceImpl implements DeletableEntitiesMarker {
 
     public List<TPlanProcedure> getPlanProcedure(int year) {
         return planRepository.findTestCaseAfterYear(year);
+    }
+
+    public TestPlanResponseDto getPlanById(long id) {
+        TPlan p = planRepository.findById(id).get();
+        TestPlanResponseDto plan = new TestPlanResponseDto();
+        plan.setId(p.getId());
+        plan.setName(p.getName());
+        plan.setDescription(p.getDescription());
+        plan.setTypeName(p.getPlanType().getName());
+        return plan;
+    }
+
+    public TestCaseUpdateDto getCaseById(long id) {
+        TCase c =  casesRepository.findById(id).get();
+        TestCaseUpdateDto testCase = new TestCaseUpdateDto();
+        testCase.setName(c.getName());
+        testCase.setDescription(c.getDescription());
+        testCase.setCategory(c.getCategory().getName());
+        testCase.setPriority(c.getPriority().getName());
+        testCase.setId(c.getId());
+        testCase.setStatus(c.getStatus().getName());
+        return testCase;
     }
 }

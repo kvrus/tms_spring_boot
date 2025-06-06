@@ -13,6 +13,7 @@ import ru.moscow.tms.tms.models.*;
 import ru.moscow.tms.tms.repository.*;
 import ru.moscow.tms.tms.repository.interfaces.CaseWithPlanRepository;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -72,21 +73,65 @@ public class CaseServiceImpl implements DeletableEntitiesMarker {
         }
     }
 
+    public List<TCaseCategory> getAllCategories() {
+        return categoryRepository.findAll().stream().sorted(Comparator.comparingLong(TCaseCategory::getId)).toList();
+    }
+
+    public List<TCasePriority> getAllPriorities() {
+        return priorityRepository.findAll().stream().sorted(Comparator.comparingLong(TCasePriority::getId)).toList();
+    }
+
+    public void createCategory(TCaseCategory category) {
+        categoryRepository.save(category);
+    }
+
+    public void createPriority(TCasePriority priority) {
+        priorityRepository.save(priority);
+    }
+
+    public List<TCaseStatus> getAllStatuses() {
+        return statusRepository.findAll();
+    }
+
     @Override
     public void markAsDeleted(Long id) {
         TCaseWithPlan testCase = repository.findById(id).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));
-        testCase.set_deleted(true);
+        testCase.setDeleted(true);
         repository.save(testCase);
     }
 
     @Override
     public void unmarkAsDeleted(Long id) {
         TCaseWithPlan testCase = repository.findById(id).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));
-        testCase.set_deleted(false);
+        testCase.setDeleted(false);
         repository.save(testCase);
     }
 
     public Page<TCase> getCases(int page, int size) {
         return caseRepository.findAll(PageRequest.of(page, size));
+    }
+
+    public void saveNewCategory(TCaseCategory category) {
+        categoryRepository.save(category);
+    }
+
+    public void updateCategory(TCaseCategory category) {
+        categoryRepository.saveAndFlush(category);
+    }
+
+    public void saveNewPriority(TCasePriority priority) {
+        priorityRepository.save(priority);
+    }
+
+    public void updatePriority(TCasePriority priority) {
+        priorityRepository.saveAndFlush(priority);
+    }
+
+    public TCasePriority getPriority(Long id) {
+        return priorityRepository.findById(id).orElseThrow();
+    }
+
+    public TCaseCategory getCategory(Long id) {
+        return categoryRepository.findById(id).orElseThrow();
     }
 }

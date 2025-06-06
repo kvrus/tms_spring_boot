@@ -1,5 +1,7 @@
 package ru.moscow.tms.tms.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -14,6 +16,8 @@ import java.util.Optional;
 public interface PlanRepository extends JpaRepository<TPlan, Long> {
 
     Optional<TPlan> findByName(String name);
+
+    Page<TPlan> findByIsDeletedFalse(Pageable pageable);
 
     // Custom query
     @Query("SELECT b FROM TPlan b WHERE b.name like :query")
