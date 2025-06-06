@@ -8,10 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.moscow.tms.auth.controller.dto.RoleDto;
 import ru.moscow.tms.auth.controller.dto.SignUpDto;
 import ru.moscow.tms.auth.controller.dto.UserDto;
@@ -101,6 +98,20 @@ public class FrontAdminController {
         return "admin/add_user";
     }
 
+    @GetMapping("/admin/users/{userId}/edit")
+    public String editPlanPage(@PathVariable("userId") String userId, Model model) {
+        UserEntity user = service.getUser(Long.parseLong(userId));
+        List<String> rolesString = user.getRoles().stream().map(Role::getName).toList();
+        List<RoleDto> roles = service.getAllRoles().stream().map(r-> new RoleDto(r.getName(), r.getId(), rolesString.contains(r.getName()))).toList();
+        model.addAttribute("user", new UserDto(user.getUsername(), user.getId(), user.getRoles().stream().map(Role::getName).toList()));
+        model.addAttribute("roles", roles);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "admin/add_user";
+    }
+
     @GetMapping("/admin/test/priorities/add")
     public String addPriorityPage(Model model) {
         TCasePriority priority = new TCasePriority();
@@ -130,8 +141,14 @@ public class FrontAdminController {
     }
 
     @PostMapping("/admin/users/edit")
-    public String editPlan(@ModelAttribute UserDto user,  @AuthenticationPrincipal UserDetails userDetails) {
+    public String editUser(@ModelAttribute UserDto user,  @AuthenticationPrincipal UserDetails userDetails) {
         service.updateUser(user);
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("/admin/users/{userId}/delete")
+    public String deleteUser(@PathVariable("planId") String userId, Model model) {
+        service.markAsDeleted(Long.parseLong(userId));
         return "redirect:/admin/users";
     }
 

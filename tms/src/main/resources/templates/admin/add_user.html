@@ -50,7 +50,7 @@
 
     <form id="createObjectForm" th:action="${user.id} == null ? @{/admin/users/add} : @{/admin/users/edit}" method="post" th:object="${user}">
         <div class="modal-header">
-            <h5 class="modal-title" id="createObjectModalLabel" th:text="${user.id} == null ? 'Добавить нового пользователя' : 'Редактировать пользователя'">Добавить тест план</h5>
+            <h5 class="modal-title" id="createObjectModalLabel" th:text="${user.id} == null ? 'Добавить нового пользователя (временный пароль 123456)' : 'Редактировать пользователя'">Добавить тест план</h5>
         </div>
         <div class="modal-body">
             <!-- Name -->
@@ -71,7 +71,7 @@
                 <label for="roles" class="form-label">Roles</label>
                 <select multiple class="form-select" id="roles" name="roles" aria-label="Select user roles" required>
                     <option th:each="role: ${roles}"
-                            th:value="${role.getId()}"
+                            th:value="${role.getName()}"
                             th:text="${role.getName()}"
                             th:selected="${role.selected} ? 'selected' : null">
                         Admin

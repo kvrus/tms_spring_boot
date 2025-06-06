@@ -13,6 +13,7 @@ import ru.moscow.tms.auth.models.Role;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.RoleRepository;
 import ru.moscow.tms.auth.repository.UserRepository;
+import ru.moscow.tms.tms.controller.dto.plan.TestPlanResponseDto;
 import ru.moscow.tms.tms.models.TPlan;
 
 import java.util.List;
@@ -42,8 +43,23 @@ public class UserService {
 
     public void updateUser(UserDto user) {
         UserEntity entity = repository.findById(user.getId()).orElseThrow();
-        entity.setUsername(user.getName());
-        entity.setRoles(user.getRoles().stream().map(r -> roleRepository.findByName(r).orElseThrow()).toList());
-        repository.save(entity);
+        UserEntity newEntity = new UserEntity(
+                user.getId(),
+                user.getName(),
+                entity.getPassword(),
+                user.getRoles().stream().map(r -> roleRepository.findByName(r).orElseThrow()).toList()
+        );
+        repository.save(newEntity);
+    }
+
+    public void markAsDeleted(long id) {
+        UserEntity entity = repository.findById(id).orElseThrow(() -> new IllegalStateException("User with this id does not exists"));
+        // Mark as deactivated account
+        //entity. setDeleted(true);
+        //planRepository.save(entity);
+    }
+
+    public UserEntity getUser(long id) {
+        return repository.findById(id).orElseThrow(() -> new IllegalStateException("User with this id does not exists"));
     }
 }
