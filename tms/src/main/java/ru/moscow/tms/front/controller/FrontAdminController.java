@@ -97,4 +97,26 @@ public class FrontAdminController {
         return "admin/add_user";
     }
 
+    @GetMapping("/admin/test/priorities/add")
+    public String addPriorityPage(Model model) {
+        TCasePriority priority = new TCasePriority();
+        model.addAttribute("priority", priority);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "admin/add_priority";
+    }
+
+    @GetMapping("/admin/test/categories/add")
+    public String addCategoryPage(Model model) {
+        TCaseCategory category = new TCaseCategory();
+        model.addAttribute("category", category);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "admin/add_category";
+    }
+
 }

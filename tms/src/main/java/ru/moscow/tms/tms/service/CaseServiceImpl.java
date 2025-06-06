@@ -80,6 +80,14 @@ public class CaseServiceImpl implements DeletableEntitiesMarker {
         return priorityRepository.findAll();
     }
 
+    public void createCategory(TCaseCategory category) {
+        categoryRepository.save(category);
+    }
+
+    public void createPriority(TCasePriority priority) {
+        priorityRepository.save(priority);
+    }
+
     public List<TCaseStatus> getAllStatuses() {
         return statusRepository.findAll();
     }

@@ -69,7 +69,7 @@
         <p class="lead mb-0">
             Приоритеты тест кейсов
         </p>
-        <a type="button" class="btn btn-primary" th:href="@{/admin/user/add}">
+        <a type="button" class="btn btn-primary" th:href="@{/admin/test/priorities/add}">
             Create New Priority
         </a>
     </div>
@@ -79,6 +79,7 @@
             <tr>
                 <th scope="col" style="width: 5%;">#</th>
                 <th scope="col" style="width: 25%;">Name</th>
+                <th scope="col" style="width: 25%;">Description</th>
                 <th scope="col" style="width: 5%;">Actions</th>
             </tr>
             </thead>
@@ -86,6 +87,7 @@
             <tr th:each="list: ${list}" style="cursor:pointer;">
                 <th scope="row" th:text="${list.getId()}"></th>
                 <td th:text="${list.getName()}"></td>
+                <td th:text="${list.getDescription()}"></td>
                 <td>
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-sm btn-primary" title="Edit"
