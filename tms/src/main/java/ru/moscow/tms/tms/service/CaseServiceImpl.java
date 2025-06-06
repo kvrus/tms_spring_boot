@@ -13,6 +13,7 @@ import ru.moscow.tms.tms.models.*;
 import ru.moscow.tms.tms.repository.*;
 import ru.moscow.tms.tms.repository.interfaces.CaseWithPlanRepository;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -73,11 +74,11 @@ public class CaseServiceImpl implements DeletableEntitiesMarker {
     }
 
     public List<TCaseCategory> getAllCategories() {
-        return categoryRepository.findAll();
+        return categoryRepository.findAll().stream().sorted(Comparator.comparingLong(TCaseCategory::getId)).toList();
     }
 
     public List<TCasePriority> getAllPriorities() {
-        return priorityRepository.findAll();
+        return priorityRepository.findAll().stream().sorted(Comparator.comparingLong(TCasePriority::getId)).toList();
     }
 
     public void createCategory(TCaseCategory category) {
@@ -124,5 +125,13 @@ public class CaseServiceImpl implements DeletableEntitiesMarker {
 
     public void updatePriority(TCasePriority priority) {
         priorityRepository.saveAndFlush(priority);
+    }
+
+    public TCasePriority getPriority(Long id) {
+        return priorityRepository.findById(id).orElseThrow();
+    }
+
+    public TCaseCategory getCategory(Long id) {
+        return categoryRepository.findById(id).orElseThrow();
     }
 }

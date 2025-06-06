@@ -134,6 +134,28 @@ public class FrontAdminController {
         return "admin/add_category";
     }
 
+    @GetMapping("/admin/test/priorities/{id}/edit")
+    public String updatePriorityPage(@PathVariable("id") String id, Model model) {
+        TCasePriority priority = caseService.getPriority(Long.parseLong(id));
+        model.addAttribute("priority", priority);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "admin/add_priority";
+    }
+
+    @GetMapping("/admin/test/categories/{id}/edit")
+    public String updateCategoryPage(@PathVariable("id") String id, Model model) {
+        TCaseCategory category = caseService.getCategory(Long.parseLong(id));
+        model.addAttribute("category", category);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        return "admin/add_category";
+    }
+
     @PostMapping("/admin/users/add")
     public String saveUser(@ModelAttribute UserDto user, @AuthenticationPrincipal UserDetails userDetails) {
         authService.signUp(new SignUpDto(user.getName(), "123456"));
