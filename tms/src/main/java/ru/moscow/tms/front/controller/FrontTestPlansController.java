@@ -61,7 +61,9 @@ public class FrontTestPlansController {
         model.addAttribute("auth",
                 auth
         );
-        return "add_plan";
+        model.addAttribute("activePage", "plans");
+        model.addAttribute("contentTemplate", "content_add_plan");
+        return "layout";
     }
 
     @PostMapping("/plans/add")
@@ -84,7 +86,9 @@ public class FrontTestPlansController {
         model.addAttribute("auth",
                 auth
         );
-        return "add_plan";
+        model.addAttribute("activePage", "plans");
+        model.addAttribute("contentTemplate", "content_add_plan");
+        return "layout";
     }
 
     @GetMapping("/plans/{planId}/delete")
@@ -104,7 +108,9 @@ public class FrontTestPlansController {
                 auth
         );
         model.addAttribute("testcase", new TestCaseDto());
-        return "cases";
+        model.addAttribute("activePage", "plans");
+        model.addAttribute("contentTemplate", "content_cases");
+        return "layout";
     }
 
     @GetMapping("/plans/{planId}/cases/add")
@@ -117,7 +123,9 @@ public class FrontTestPlansController {
         model.addAttribute("auth",
                 auth
         );
-        return "add_case";
+        model.addAttribute("activePage", "plans");
+        model.addAttribute("contentTemplate", "content_add_case");
+        return "layout";
     }
 
     @GetMapping("/plans/{planId}/cases/{caseId}/edit")
@@ -130,7 +138,9 @@ public class FrontTestPlansController {
         model.addAttribute("auth",
                 auth
         );
-        return "add_case";
+        model.addAttribute("activePage", "plans");
+        model.addAttribute("contentTemplate", "content_add_case");
+        return "layout";
     }
 
     @GetMapping("/plans/{planId}/cases/{caseId}/delete")

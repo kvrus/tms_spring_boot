@@ -175,9 +175,21 @@ public class FrontAdminController {
     }
 
     @GetMapping("/admin/users/{userId}/delete")
-    public String deleteUser(@PathVariable("planId") String userId, Model model) {
+    public String deleteUser(@PathVariable("userId") String userId, Model model) {
         service.markAsDeleted(Long.parseLong(userId));
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/admin/test/categories/{id}/delete")
+    public String deleteCategory(@PathVariable("id") String id, Model model) {
+        caseService.categoryMarkAsDeleted(Long.parseLong(id));
+        return "redirect:/admin/test/categories";
+    }
+
+    @GetMapping("/admin/test/priorities/{id}/delete")
+    public String deletePriorities(@PathVariable("id") String id, Model model) {
+        caseService.priorityAsDeleted(Long.parseLong(id));
+        return "redirect:/admin/test/priorities";
     }
 
     @PostMapping("/admin/test/categories/add")

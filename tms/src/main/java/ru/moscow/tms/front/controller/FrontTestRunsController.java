@@ -77,7 +77,9 @@ public class FrontTestRunsController {
         model.addAttribute("auth",
                 auth
         );
-        return "add_run";
+        model.addAttribute("activePage", "runs");
+        model.addAttribute("contentTemplate", "content_add_run");
+        return "layout";
     }
 
     @PostMapping("/runs/add")

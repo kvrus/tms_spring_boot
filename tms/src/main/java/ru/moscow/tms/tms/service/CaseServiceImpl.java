@@ -74,11 +74,11 @@ public class CaseServiceImpl implements DeletableEntitiesMarker {
     }
 
     public List<TCaseCategory> getAllCategories() {
-        return categoryRepository.findAll().stream().sorted(Comparator.comparingLong(TCaseCategory::getId)).toList();
+        return categoryRepository.findAll().stream().filter(c -> !c.isDeleted()).sorted(Comparator.comparingLong(TCaseCategory::getId)).toList();
     }
 
     public List<TCasePriority> getAllPriorities() {
-        return priorityRepository.findAll().stream().sorted(Comparator.comparingLong(TCasePriority::getId)).toList();
+        return priorityRepository.findAll().stream().filter(c -> !c.isDeleted()).sorted(Comparator.comparingLong(TCasePriority::getId)).toList();
     }
 
     public void createCategory(TCaseCategory category) {
@@ -133,5 +133,17 @@ public class CaseServiceImpl implements DeletableEntitiesMarker {
 
     public TCaseCategory getCategory(Long id) {
         return categoryRepository.findById(id).orElseThrow();
+    }
+
+    public void categoryMarkAsDeleted(long id) {
+        TCaseCategory categ = categoryRepository.findById(id).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));
+        categ.setDeleted(true);
+        categoryRepository.save(categ);
+    }
+
+    public void priorityAsDeleted(long id) {
+        TCasePriority priority = priorityRepository.findById(id).orElseThrow(() -> new IllegalStateException("Case with this id does not exists"));
+        priority.setDeleted(true);
+        priorityRepository.save(priority);
     }
 }

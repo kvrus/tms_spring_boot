@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout (~{::body})">
+<body>
+<div th:fragment="content">
+    <!-- Page Content -->
+    <main class="container col-6 my-4">
+
+        <form id="createObjectForm" th:action="@{/runs/add}" method="post" novalidate th:object="${run}">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createObjectModalLabel">Create New Test Run</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Name -->
+                <div class="mb-3">
+                    <label for="nameInput" class="form-label">Name</label>
+                    <input type="text"
+                           class="form-control"
+                           id="nameInput"
+                           th:field="*{name}"
+                           placeholder="Enter name"
+                           required>
+                    <div class="invalid-feedback">
+
+                    </div>
+                </div>
+                <label for="descriptionInput" class="form-label">Description</label>
+                <textarea class="form-control"
+                          id="descriptionInput"
+                          th:field="*{description}"
+                          placeholder="Enter description"
+                          rows="3"
+                          required></textarea>
+                <div class="invalid-feedback">
+                    Please provide a description.
+                </div>
+                <label for="planInput" class="form-label mt-3">Plan Name</label>
+                <input type="text"
+                       class="form-control"
+                       id="planInput"
+                       th:field="*{plan}"
+                       placeholder="Enter plan name"
+                       required>
+                <div class="invalid-feedback">
+                    Please provide a plan name.
+                </div>
+            </div>
+            <div id="formFeedback" class="alert d-none" role="alert"></div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Run</button>
+            </div>
+        </form>
+    </main>
+</div>
+</body>
+</html>

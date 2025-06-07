@@ -1,9 +1,6 @@
 package ru.moscow.tms.core.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +16,7 @@ public class BaseDictionaryEntity {
 
     private String name;
 
-    private boolean is_deleted;
+    @Column(name="is_deleted")
+    private boolean isDeleted;
 
 }
