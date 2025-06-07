@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.moscow.tms.auth.models.UserEntity;
 import ru.moscow.tms.auth.repository.UserRepository;
+import ru.moscow.tms.tms.controller.dto.plan.TestPlanResponseDto;
 import ru.moscow.tms.tms.controller.dto.run.TestRunDto;
 import ru.moscow.tms.tms.controller.dto.run.TestRunUpdateDto;
 import ru.moscow.tms.tms.models.*;
@@ -65,6 +66,10 @@ public class TestRunServiceImpl implements DeletableEntitiesMarker {
     }
 
     public Page<TRun> getRuns(int page, int size) {
-        return runRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "creationDate")));
+        return runRepository.findByIsDeletedFalse(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "creationDate")));
+    }
+
+    public TRun getRunById(long id) {
+        return runRepository.findById(id).orElseThrow();
     }
 }

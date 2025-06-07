@@ -87,4 +87,23 @@ public class FrontTestRunsController {
         service.createTestRun(run, userDetails.getUsername());
         return "redirect:/runs";
     }
+
+    @GetMapping("/runs/{runId}/edit")
+    public String editRunPage(@PathVariable("runId") String runId, Model model) {
+        TRun run = service.getRunById(Long.parseLong(runId));
+        model.addAttribute("run", new TestRunDto(run.getName(), run.getDescription(), run.getPlan().getName()));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth",
+                auth
+        );
+        model.addAttribute("activePage", "runs");
+        model.addAttribute("contentTemplate", "content_add_run");
+        return "layout";
+    }
+
+    @GetMapping("/runs/{runId}/delete")
+    public String deleteRunPage(@PathVariable("runId") String runId, Model model) {
+        service.markAsDeleted(Long.parseLong(runId));
+        return "redirect:/runs";
+    }
 }
