@@ -42,6 +42,7 @@ public class SecurityConfig {
                                          "/images/**",
                                          "/v3/api-docs/**",
                                          "/swagger-ui/**",
+                                         "/registration",
                                          "/swagger-resources/**",
                                          "/v2/api-docs/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority(SUPERUSER_ROLE)
