@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: product-service
-  data:
-    mongodb: mongodb://localhost:27017/product-service
-
-

@@ -1,4 +1,0 @@
-include ':tms'
-include ':microservices:product-service'
-include ':microservices:order-service'
-include ':microservices:inventory-service'
