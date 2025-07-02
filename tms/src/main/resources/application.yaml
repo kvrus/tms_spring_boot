@@ -1,0 +1,19 @@
+server:
+  port: 8082
+spring:
+  banner:
+    location: classpath:banner.txt
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tms
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: test
+  application:
+    name: tms
+  liquibase:
+    change-log: classpath:db.changelog/db.changelog-master.yaml
+    enabled: true
+ru_moscow_tms:
+  openapi:
+    dev-url: http://localhost:8088
+    prod-url: https://localhost:8080
