@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout (~{::body})">
+<body>
+<div th:fragment="content">
+    <!-- Page Content -->
+    <main class="container col-6 my-4">
+
+        <form id="createObjectForm" th:action="${plan.id} == null ? @{/plans/add} : @{/plans/edit}" method="post"
+              th:object="${plan}">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createObjectModalLabel"
+                    th:text="${plan.id} == null ? 'Добавить тест план' : 'Редактировать тест план'">Добавить тест
+                    план</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Name -->
+                <div class="mb-3">
+                    <label for="nameInput" class="form-label">Name</label>
+                    <input type="text"
+                           th:field="*{name}"
+                           class="form-control"
+                           id="nameInput"
+                           placeholder="Enter name"
+                           required>
+                    <div class="invalid-feedback">
+                        Please provide a name.
+                    </div>
+                </div>
+                <label for="descriptionInput" class="form-label">Description</label>
+                <textarea class="form-control"
+                          id="descriptionInput"
+                          th:field="*{description}"
+                          placeholder="Enter description"
+                          rows="3"
+                          required>some new descripton</textarea>
+                <div class="invalid-feedback">
+                    Please provide a description.
+                </div>
+                <label for="typeNameInput" class="form-label mt-3">Type Name</label>
+                <input type="text"
+                       class="form-control"
+                       id="typeNameInput"
+                       th:field="*{typeName}"
+                       placeholder="Enter type name"
+                       value="base"
+                       required>
+                <div class="invalid-feedback">
+                    Please provide a type name.
+                </div>
+            </div>
+            <div id="formFeedback" class="alert d-none" role="alert"></div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            <input type="hidden" th:field="*{id}">
+        </form>
+    </main>
+</div>
+</body>
+</html>
