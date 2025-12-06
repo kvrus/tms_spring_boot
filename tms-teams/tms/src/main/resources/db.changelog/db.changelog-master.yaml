@@ -1,9 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: classpath:db.changelog/0.0.1/1-add-tms-tables.sql
-  - include:
-      file: classpath:db.changelog/0.0.1/2-add-user-table.sql
-  - include:
-      file: classpath:db.changelog/0.0.1/3-add-roles.sql
-  - include:
-      file: classpath:db.changelog/0.0.1/4-add-tms-user-constraints.sql
