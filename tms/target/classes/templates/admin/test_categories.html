@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>TMS Dashboard</title>
+    <script src="https://unpkg.com/htmx.org@1.9.5"
+            integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap Icons CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">TMS</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/plans">Plans</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/runs">Runs</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <div class="dropdown mt-3">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButto"
+                            data-bs-toggle="dropdown" aria-expanded="false" th:text="${auth.getName()}">
+                        Select Option
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#" th:text="'Settings'">Option 1</a></li>
+                        <li><a class="dropdown-item" href="/logout" th:text="'Logout'">Option 2</a></li>
+                        <li><a class="dropdown-item" href="#" th:text="'Administration'">Option 3</a></li>
+                    </ul>
+                </div>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<main class="container my-4">
+    
+    <div class="container my-4">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/users">Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin/test/categories" aria-current="page">Test Categories</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/test/priorities">Test Priorities</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+        <p class="lead mb-0">
+            Категории тест кейсов
+        </p>
+        <a type="button" class="btn btn-primary" th:href="@{/admin/test/categories/add}">
+            Create New Category
+        </a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="table-light">
+            <tr>
+                <th scope="col" style="width: 5%;">#</th>
+                <th scope="col" style="width: 25%;">Name</th>
+                <th scope="col" style="width: 25%;">Description</th>
+                <th scope="col" style="width: 5%;">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            <tr th:each="list: ${list}" style="cursor:pointer;">
+                <th scope="row" th:text="${list.getId()}"></th>
+                <td th:text="${list.getName()}"></td>
+                <td th:text="${list.getDescription()}"></td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-sm btn-primary" title="Edit"
+                                th:onclick="'window.location.href=\'/admin/test/categories/' + ${list.getId()} + '/edit\';'">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger" title="Delete"
+                                th:onclick="'window.location.href=\'/admin/test/categories/' + ${list.getId()} + '/delete\';'">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

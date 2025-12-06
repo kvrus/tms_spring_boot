@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout (~{::body})">
+<body>
+<div th:fragment="content">
+    <!-- Page Content -->
+    <main class="container my-4">
+
+        <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+            <p class="lead mb-0" th:text="'Тест кейсы для плана: '+${plan.getName()}">
+                Тест кейсы
+            </p>
+            <button type="button" class="btn btn-primary"
+                    th:onclick="'location.href=\'/plans/' + ${plan.getId()} + '/cases/add\';'">
+                Create New Case
+            </button>
+        </div>
+        <div class="table-responsive">
+            <div th:if="${#lists.isEmpty(testCases)}">
+                <p class="mt-2">В тест плане пока нет тест кейсов, их необходимо добавить</p>
+            </div>
+            <table class="table table-striped table-bordered align-middle" th:unless="${#lists.isEmpty(testCases)}">
+
+                <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Tester</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="testCase : ${testCases}">
+                    <td th:text="${testCase.getName()}">Name</td>
+                    <td th:text="${testCase.getDescription()}">Description</td>
+                    <td th:text="${testCase.getCategory()}">Category</td>
+                    <td th:text="${testCase.getPriority()}">Priority</td>
+                    <td th:text="${testCase.getStatus()}">Status</td>
+                    <td th:text="${testCase.getTester()}">Tester</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <a type="button" class="btn btn-sm btn-primary" title="Edit"
+                               th:href="@{/plans/{planId}/cases/{caseId}/edit(planId=${plan.getId()}, caseId=${testCase.getId()})}">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a type="button" class="btn btn-sm btn-danger" title="Delete"
+                               th:href="@{/plans/{planId}/cases/{caseId}/delete(planId=${plan.getId()}, caseId=${testCase.getId()})}">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</div>
+</body>
+</html>

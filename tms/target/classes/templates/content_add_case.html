@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout (~{::body})">
+<body>
+<div th:fragment="content">
+    <!-- Page Content -->
+    <main class="container col-6 my-4">
+
+        <form id="createCaseForm"
+              th:action="${testcase.id} == null ? @{/plans/{id}/cases/add(id=${plan.getId()})} : @{/plans/{planId}/cases/{caseId}/edit(planId=${plan.getId()}, caseId=${testcase.getId()})}"
+              th:object="${testcase}" method="POST">
+            <div class="modal-header">
+                <h5 class="modal-title"
+                    th:text="${testcase.id} == null ? 'Добавить тест кейс' : 'Редактировать тест кейс'">Create New Test
+                    Case</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Name -->
+                <div class="mb-3">
+                    <label for="nameInput" class="form-label">Name</label>
+                    <input type="text"
+                           class="form-control"
+                           id="nameInput"
+                           th:field="*{name}"
+                           placeholder="Enter name"
+                           required>
+                    <div class="invalid-feedback">
+                        Please provide a name.
+                    </div>
+                </div>
+                <label for="descriptionInput" class="form-label">Description</label>
+                <textarea class="form-control"
+                          id="descriptionInput"
+                          th:field="*{description}"
+                          placeholder="Enter description"
+                          rows="10"
+                          required>some new descripton</textarea>
+                <div class="invalid-feedback">
+                    Please provide a description.
+                </div>
+                <label for="categoryNameInput" class="form-label mt-3">Category Name</label>
+                <input type="text"
+                       class="form-control"
+                       id="categoryNameInput"
+                       th:field="*{category}"
+                       placeholder="Enter type name"
+                       value="default"
+                       required>
+                <div class="invalid-feedback">
+                    Please provide a category name.
+                </div>
+                <label for="priorityNameInput" class="form-label mt-3">Priority Name</label>
+                <input type="text"
+                       class="form-control"
+                       id="priorityNameInput"
+                       th:field="*{priority}"
+                       placeholder="Enter priority name"
+                       value="minor"
+                       required>
+                <div class="invalid-feedback">
+                    Please provide a priority name.
+                </div>
+            </div>
+            <div id="formFeedback" class="alert d-none" role="alert"></div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{status}">
+        </form>
+
+    </main>
+</div>
+</body>
+</html>
